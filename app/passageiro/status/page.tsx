@@ -125,13 +125,22 @@ export default function StatusViagemInscrita() {
               
               {/* Ação Principal exigida pelo PDF */}
               <Button 
+                onClick={() => router.push("/passageiro/validar")} // Certifique-se de que o arquivo novo esteja em app/passageiro/validar/page.tsx
                 className="w-full h-16 bg-[#103173] hover:bg-[#103B73] text-white font-black text-lg rounded-2xl shadow-lg transition-all active:scale-95 flex items-center gap-3"
               >
                 <QrCode className="h-6 w-6 text-[#F2D022]" />
                 VALIDAR CÓDIGO DO MOTORISTA
               </Button>
 
-              <Button variant="ghost" className="text-red-500 font-bold hover:text-red-600 hover:bg-red-50">
+              <Button 
+                variant="ghost" 
+                onClick={() => {
+                  if(confirm("Tem certeza que deseja cancelar sua vaga?")) {
+                    router.push("/passageiro");
+                  }
+                }}
+                className="text-red-500 font-bold hover:text-red-600 hover:bg-red-50"
+              >
                 CANCELAR MINHA INSCRIÇÃO
               </Button>
             </CardFooter>

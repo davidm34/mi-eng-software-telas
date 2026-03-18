@@ -36,7 +36,7 @@ export default function ConfirmacaoInscricao() {
     <div className="flex min-h-screen flex-col bg-[#E4F2F1]">
       <Navigation />
 
-      <main className="flex-1 container max-w-2xl py-12 px-4">
+      <main className="flex-1 w-full max-w-2xl mx-auto py-12 px-4">
         {/* Botão Voltar */}
         <Button 
           variant="ghost" 

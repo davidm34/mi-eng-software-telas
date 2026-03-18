@@ -39,7 +39,7 @@ export default function StatusViagemInscrita() {
     <div className="flex min-h-screen flex-col bg-[#E4F2F1]">
       <Navigation />
 
-      <main className="flex-1 container max-w-2xl py-10 px-4">
+      <main className="flex-1 w-full max-w-2xl mx-auto py-10 px-4">
         {/* Cabeçalho de Navegação */}
         <div className="flex items-center justify-between mb-8">
           <Button 

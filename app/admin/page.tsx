@@ -90,7 +90,7 @@ export default function PaginaAdmin() {
   return (
     <div className="flex min-h-screen flex-col bg-[#E4F2F1] pb-24">
       <Navigation />
-      <main className="flex-1 container max-w-6xl py-10 px-4 space-y-8">
+      <main className="flex-1 w-full max-w-6xl mx-auto py-10 px-4 space-y-8">
         <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl md:text-4xl font-black text-[#103173] flex items-center gap-3 tracking-tight">
@@ -104,7 +104,7 @@ export default function PaginaAdmin() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
             <Button
               variant="outline"
               className="h-12 border-2 border-[#73AABF] text-[#103173] font-black hover:bg-[#73AABF]/15 transition-colors"
@@ -118,6 +118,13 @@ export default function PaginaAdmin() {
               onClick={() => router.push("/admin/viagens")}
             >
               <Route className="h-4 w-4 mr-2" /> GESTÃO DE VIAGENS
+            </Button>
+            <Button
+              variant="outline"
+              className="h-12 border-2 border-[#103173]/30 text-[#103173] font-black hover:bg-[#103173]/10 transition-colors"
+              onClick={() => router.push("/admin/usuarios")}
+            >
+              <UserRound className="h-4 w-4 mr-2" /> USUÁRIOS E PERMISSÕES
             </Button>
             <Button
               variant="outline"

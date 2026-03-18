@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ComponentType, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type ComponentType, type FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Navigation } from "@/components/landing/navigation";
 import { FooterSection } from "@/components/landing/footer-section";
@@ -121,7 +121,8 @@ function normalizarRotas(rotasTexto: string) {
     .filter(Boolean);
 }
 
-export default function CadastroEdicaoOnibusPage() {
+// Componente que contém a lógica do formulário e utiliza useSearchParams
+function CadastroEdicaoOnibusForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const modoNovo = searchParams.get("modo") === "novo";
@@ -588,6 +589,15 @@ export default function CadastroEdicaoOnibusPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Export default envolto em Suspense para corrigir o erro de pré-renderização
+export default function CadastroEdicaoOnibusPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#E4F2F1] text-[#103173] font-bold">A carregar formulário...</div>}>
+      <CadastroEdicaoOnibusForm />
+    </Suspense>
   );
 }
 

@@ -177,6 +177,13 @@ export default function GestaoMotoristasPage() {
               <Bus className="h-4 w-4 mr-2" /> GESTÃO DE ÔNIBUS
             </Button>
             <Button
+              variant="outline"
+              className="h-12 border-2 border-[#103173]/30 text-[#103173] font-black hover:bg-[#103173]/10 transition-colors"
+              onClick={() => router.push("/admin/viagens")}
+            >
+              <Route className="h-4 w-4 mr-2" /> GESTÃO DE VIAGENS
+            </Button>
+            <Button
               className="h-12 bg-[#23B99A] hover:bg-[#1d957c] text-white font-black shadow-lg shadow-[#23B99A]/20 transition-all active:scale-95"
               onClick={() => router.push("/admin/motoristas/cadastro?modo=novo")}
             >

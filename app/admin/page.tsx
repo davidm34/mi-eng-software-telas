@@ -114,6 +114,13 @@ export default function PaginaAdmin() {
             </Button>
             <Button
               variant="outline"
+              className="h-12 border-2 border-[#103173]/30 text-[#103173] font-black hover:bg-[#103173]/10 transition-colors"
+              onClick={() => router.push("/admin/viagens")}
+            >
+              <Route className="h-4 w-4 mr-2" /> GESTÃO DE VIAGENS
+            </Button>
+            <Button
+              variant="outline"
               className="h-12 border-2 border-[#103173] text-[#103173] font-black hover:bg-[#103173] hover:text-white transition-colors"
               onClick={() => window.alert("Protótipo: exportar relatório da frota.")}
             >

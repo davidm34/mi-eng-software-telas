@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ComponentType, type FormEvent } from "react";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Navigation } from "@/components/landing/navigation";
 import { FooterSection } from "@/components/landing/footer-section";
@@ -125,7 +126,7 @@ function getStatusBadge(status: StatusViagem) {
   };
 }
 
-export default function CadastroEdicaoViagemPage() {
+function ViagemFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const modoNovo = searchParams.get("modo") === "novo";
@@ -637,6 +638,14 @@ export default function CadastroEdicaoViagemPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CadastroEdicaoViagemPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#E4F2F1]">A carregar formulário...</div>}>
+      <ViagemFormContent />
+    </Suspense>
   );
 }
 

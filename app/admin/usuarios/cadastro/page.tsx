@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ComponentType, type FormEvent } from "react";
+// Adicionado Suspense aos imports
+import { useEffect, useMemo, useState, type ComponentType, type FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Navigation } from "@/components/landing/navigation";
 import { FooterSection } from "@/components/landing/footer-section";
@@ -188,11 +189,9 @@ function getStatusBadge(status: StatusAdministrador) {
   if (status === "ativo") {
     return { label: "ATIVO", className: "bg-[#23B99A] text-white font-bold" };
   }
-
   if (status === "pendente") {
     return { label: "PENDENTE", className: "bg-orange-500 text-white font-bold" };
   }
-
   return { label: "BLOQUEADO", className: "bg-red-500 text-white font-bold" };
 }
 
@@ -200,19 +199,15 @@ function getPerfilBadge(perfil: PerfilAdministrador) {
   if (perfil === "super_admin") {
     return { label: "SUPER ADMIN", className: "bg-[#103173] text-white font-bold" };
   }
-
   if (perfil === "gestor_frota") {
     return { label: "GESTOR DE FROTA", className: "bg-[#0f5c7a] text-white font-bold" };
   }
-
   if (perfil === "gestor_viagens") {
     return { label: "GESTOR DE VIAGENS", className: "bg-[#73AABF] text-white font-bold" };
   }
-
   if (perfil === "operacao_embarque") {
     return { label: "OPERAÇÃO DE EMBARQUE", className: "bg-[#23B99A] text-white font-bold" };
   }
-
   return { label: "COMPLIANCE", className: "bg-amber-500 text-white font-bold" };
 }
 
@@ -220,19 +215,17 @@ function getNivelPermissaoInfo(nivel: NivelPermissao) {
   if (nivel === "total") {
     return { label: "TOTAL", className: "bg-[#23B99A] text-white font-bold" };
   }
-
   if (nivel === "edicao") {
     return { label: "EDIÇÃO", className: "bg-[#103173] text-white font-bold" };
   }
-
   if (nivel === "leitura") {
     return { label: "LEITURA", className: "bg-[#73AABF] text-white font-bold" };
   }
-
   return { label: "SEM ACESSO", className: "bg-slate-300 text-slate-700 font-bold" };
 }
 
-export default function CadastroEdicaoAdministradorPage() {
+// 1. Extraímos o conteúdo para um sub-componente
+function FormularioCadastroAdministrador() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const modoNovo = searchParams.get("modo") === "novo";
@@ -314,25 +307,20 @@ export default function CadastroEdicaoAdministradorPage() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const possuiPermissaoAtiva = MODULOS_SISTEMA_MOCK.some(
       (modulo) => formData.permissoes[modulo] !== "nenhum",
     );
-
     if (!formData.nome.trim() || !formData.matricula.trim() || !formData.email.trim()) {
       window.alert("Preencha ao menos Nome, Matrícula e E-mail institucional.");
       return;
     }
-
     if (!possuiPermissaoAtiva) {
       window.alert("Defina pelo menos uma permissão de módulo para este administrador.");
       return;
     }
-
     const mensagem = emEdicao
       ? `Protótipo: administrador ${formData.nome} atualizado com sucesso.`
       : `Protótipo: administrador ${formData.nome || formData.id} cadastrado com sucesso.`;
-
     window.alert(mensagem);
     router.push("/admin/usuarios");
   };
@@ -340,7 +328,6 @@ export default function CadastroEdicaoAdministradorPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#E4F2F1] pb-24">
       <Navigation />
-
       <main className="flex-1 w-full max-w-6xl mx-auto py-10 px-4 space-y-6">
         <Button
           variant="ghost"
@@ -363,7 +350,6 @@ export default function CadastroEdicaoAdministradorPage() {
               Formulário administrativo mockado para controle de acesso, escopo e permissões por módulo.
             </p>
           </div>
-
           <div className="flex gap-2 flex-wrap">
             <Badge className={statusBadge.className}>{statusBadge.label}</Badge>
             <Badge className={perfilBadge.className}>{perfilBadge.label}</Badge>
@@ -373,7 +359,7 @@ export default function CadastroEdicaoAdministradorPage() {
           </div>
         </header>
 
-        {referenciaInvalida ? (
+        {referenciaInvalida && (
           <Card className="border-none shadow-md bg-amber-50 border border-amber-100">
             <CardContent className="p-4">
               <p className="text-sm font-bold text-amber-800">
@@ -381,7 +367,7 @@ export default function CadastroEdicaoAdministradorPage() {
               </p>
             </CardContent>
           </Card>
-        ) : null}
+        )}
 
         <form className="grid xl:grid-cols-[1.35fr_1fr] gap-6" onSubmit={handleSubmit}>
           <div className="space-y-6">
@@ -395,9 +381,7 @@ export default function CadastroEdicaoAdministradorPage() {
                   <Input value={formData.id} disabled className="h-11 bg-slate-50 border-slate-200 font-bold" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="matricula" className="text-[#103173] font-bold">
-                    Matrícula
-                  </Label>
+                  <Label htmlFor="matricula" className="text-[#103173] font-bold">Matrícula</Label>
                   <Input
                     id="matricula"
                     value={formData.matricula}
@@ -407,11 +391,8 @@ export default function CadastroEdicaoAdministradorPage() {
                     required
                   />
                 </div>
-
                 <div className="sm:col-span-2 space-y-2">
-                  <Label htmlFor="nome" className="text-[#103173] font-bold">
-                    Nome Completo
-                  </Label>
+                  <Label htmlFor="nome" className="text-[#103173] font-bold">Nome Completo</Label>
                   <Input
                     id="nome"
                     value={formData.nome}
@@ -421,11 +402,8 @@ export default function CadastroEdicaoAdministradorPage() {
                     required
                   />
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="telefone" className="text-[#103173] font-bold">
-                    Telefone
-                  </Label>
+                  <Label htmlFor="telefone" className="text-[#103173] font-bold">Telefone</Label>
                   <Input
                     id="telefone"
                     value={formData.telefone}
@@ -435,9 +413,7 @@ export default function CadastroEdicaoAdministradorPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-[#103173] font-bold">
-                    E-mail Institucional
-                  </Label>
+                  <Label htmlFor="email" className="text-[#103173] font-bold">E-mail Institucional</Label>
                   <Input
                     id="email"
                     value={formData.email}
@@ -456,9 +432,7 @@ export default function CadastroEdicaoAdministradorPage() {
               </CardHeader>
               <CardContent className="p-6 grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="perfil" className="text-[#103173] font-bold">
-                    Perfil
-                  </Label>
+                  <Label htmlFor="perfil" className="text-[#103173] font-bold">Perfil</Label>
                   <select
                     id="perfil"
                     value={formData.perfil}
@@ -472,11 +446,8 @@ export default function CadastroEdicaoAdministradorPage() {
                     ))}
                   </select>
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="status" className="text-[#103173] font-bold">
-                    Status
-                  </Label>
+                  <Label htmlFor="status" className="text-[#103173] font-bold">Status</Label>
                   <select
                     id="status"
                     value={formData.status}
@@ -488,11 +459,8 @@ export default function CadastroEdicaoAdministradorPage() {
                     <option value="bloqueado">Bloqueado</option>
                   </select>
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="mfa" className="text-[#103173] font-bold">
-                    MFA
-                  </Label>
+                  <Label htmlFor="mfa" className="text-[#103173] font-bold">MFA</Label>
                   <select
                     id="mfa"
                     value={formData.mfaAtivo ? "sim" : "nao"}
@@ -503,11 +471,8 @@ export default function CadastroEdicaoAdministradorPage() {
                     <option value="nao">Pendente</option>
                   </select>
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="ultimo-acesso" className="text-[#103173] font-bold">
-                    Último Acesso
-                  </Label>
+                  <Label htmlFor="ultimo-acesso" className="text-[#103173] font-bold">Último Acesso</Label>
                   <Input
                     id="ultimo-acesso"
                     value={formData.ultimoAcesso}
@@ -516,31 +481,23 @@ export default function CadastroEdicaoAdministradorPage() {
                     className="h-11 border-[#73AABF]/30 focus:border-[#103173] focus:ring-[#103173]"
                   />
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="acessos-hoje" className="text-[#103173] font-bold">
-                    Acessos Hoje
-                  </Label>
+                  <Label htmlFor="acessos-hoje" className="text-[#103173] font-bold">Acessos Hoje</Label>
                   <Input
                     id="acessos-hoje"
                     type="number"
                     min={0}
-                    max={120}
                     value={formData.acessosHoje}
                     onChange={(event) => atualizarCampo("acessosHoje", event.target.value)}
                     className="h-11 border-[#73AABF]/30 focus:border-[#103173] focus:ring-[#103173]"
                   />
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="pendencias" className="text-[#103173] font-bold">
-                    Pendências Ativas
-                  </Label>
+                  <Label htmlFor="pendencias" className="text-[#103173] font-bold">Pendências Ativas</Label>
                   <Input
                     id="pendencias"
                     type="number"
                     min={0}
-                    max={20}
                     value={formData.pendenciasAtivas}
                     onChange={(event) => atualizarCampo("pendenciasAtivas", event.target.value)}
                     className="h-11 border-[#73AABF]/30 focus:border-[#103173] focus:ring-[#103173]"
@@ -556,9 +513,7 @@ export default function CadastroEdicaoAdministradorPage() {
               <CardContent className="p-6 grid sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2 space-y-2">
                   <div className="flex items-center justify-between gap-3">
-                    <Label htmlFor="rotas-escopo" className="text-[#103173] font-bold">
-                      Rotas sob Escopo
-                    </Label>
+                    <Label htmlFor="rotas-escopo" className="text-[#103173] font-bold">Rotas sob Escopo</Label>
                     <Button
                       type="button"
                       variant="outline"
@@ -576,11 +531,8 @@ export default function CadastroEdicaoAdministradorPage() {
                     className="min-h-20 border-[#73AABF]/30 focus:border-[#103173] focus:ring-[#103173]"
                   />
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="onibus-escopo" className="text-[#103173] font-bold">
-                    Ônibus sob Escopo
-                  </Label>
+                  <Label htmlFor="onibus-escopo" className="text-[#103173] font-bold">Ônibus sob Escopo</Label>
                   <Textarea
                     id="onibus-escopo"
                     value={formData.onibusEscopo}
@@ -589,11 +541,8 @@ export default function CadastroEdicaoAdministradorPage() {
                     className="min-h-20 border-[#73AABF]/30 focus:border-[#103173] focus:ring-[#103173]"
                   />
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="motoristas-escopo" className="text-[#103173] font-bold">
-                    Motoristas Relacionados
-                  </Label>
+                  <Label htmlFor="motoristas-escopo" className="text-[#103173] font-bold">Motoristas Relacionados</Label>
                   <Textarea
                     id="motoristas-escopo"
                     value={formData.motoristasEscopo}
@@ -602,7 +551,6 @@ export default function CadastroEdicaoAdministradorPage() {
                     className="min-h-20 border-[#73AABF]/30 focus:border-[#103173] focus:ring-[#103173]"
                   />
                 </div>
-
                 <div className="sm:col-span-2 space-y-3">
                   <div className="flex items-center justify-between gap-3">
                     <Label className="text-[#103173] font-bold">Matriz de Permissões por Módulo</Label>
@@ -615,16 +563,13 @@ export default function CadastroEdicaoAdministradorPage() {
                       PREENCHER PELO PERFIL
                     </Button>
                   </div>
-
                   <div className="grid md:grid-cols-2 gap-3">
                     {MODULOS_SISTEMA_MOCK.map((modulo) => (
                       <div key={modulo} className="rounded-xl border border-slate-100 bg-[#E4F2F1] p-3 space-y-2">
                         <p className="text-xs font-black text-[#103173] leading-tight">{modulo}</p>
                         <select
                           value={formData.permissoes[modulo]}
-                          onChange={(event) =>
-                            atualizarPermissao(modulo, event.target.value as NivelPermissao)
-                          }
+                          onChange={(event) => atualizarPermissao(modulo, event.target.value as NivelPermissao)}
                           className="h-9 w-full rounded-md border border-[#73AABF]/30 bg-white px-3 text-xs text-[#103173] font-bold focus:outline-none focus:ring-2 focus:ring-[#103173]/40"
                         >
                           <option value="nenhum">Sem Acesso</option>
@@ -645,9 +590,7 @@ export default function CadastroEdicaoAdministradorPage() {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-2">
-                  <Label htmlFor="observacoes" className="text-[#103173] font-bold">
-                    Notas Administrativas
-                  </Label>
+                  <Label htmlFor="observacoes" className="text-[#103173] font-bold">Notas Administrativas</Label>
                   <Textarea
                     id="observacoes"
                     value={formData.observacoes}
@@ -676,175 +619,61 @@ export default function CadastroEdicaoAdministradorPage() {
                   </div>
                   <Badge className={statusBadge.className}>{statusBadge.label}</Badge>
                 </div>
-
                 <div className="flex flex-wrap gap-2">
                   <Badge className={perfilBadge.className}>{perfilBadge.label}</Badge>
-                  <Badge
-                    className={
-                      formData.mfaAtivo
-                        ? "bg-[#23B99A] text-white font-bold"
-                        : "bg-orange-500 text-white font-bold"
-                    }
-                  >
+                  <Badge className={formData.mfaAtivo ? "bg-[#23B99A] text-white font-bold" : "bg-orange-500 text-white font-bold"}>
                     MFA {formData.mfaAtivo ? "ATIVO" : "PENDENTE"}
                   </Badge>
                 </div>
-
                 <div className="grid grid-cols-2 gap-3">
                   <ResumoItem icon={UserCircle} label="Matrícula" value={formData.matricula || "---"} />
                   <ResumoItem icon={History} label="Acessos Hoje" value={formData.acessosHoje || "0"} />
                   <ResumoItem icon={AlertTriangle} label="Pendências" value={formData.pendenciasAtivas || "0"} />
-                  <ResumoItem
-                    icon={ShieldCheck}
-                    label="Permissões Ativas"
-                    value={String(permissoesAtivasPreview.length)}
-                  />
+                  <ResumoItem icon={ShieldCheck} label="Permissões" value={String(permissoesAtivasPreview.length)} />
                 </div>
-
                 <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 space-y-2">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#73AABF]">
-                    Cobertura de Permissões
-                  </p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#73AABF]">Cobertura</p>
                   <div className="w-full h-3 bg-white border border-slate-200 rounded-full overflow-hidden">
                     <div className="h-full bg-[#103173]" style={{ width: `${coberturaPermissoes}%` }} />
                   </div>
                   <p className="text-sm font-black text-[#103173]">{coberturaPermissoes}%</p>
                 </div>
-
-                <div className="space-y-2">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#73AABF]">
-                    Módulos com Permissão
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {permissoesAtivasPreview.length > 0 ? (
-                      permissoesAtivasPreview.slice(0, 8).map((modulo) => {
-                        const nivelInfo = getNivelPermissaoInfo(formData.permissoes[modulo]);
-                        return (
-                          <Badge key={modulo} className={nivelInfo.className}>
-                            {modulo} • {nivelInfo.label}
-                          </Badge>
-                        );
-                      })
-                    ) : (
-                      <span className="text-xs font-bold text-[#73AABF]">Nenhuma permissão ativa.</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#73AABF]">
-                    Escopo Operacional
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {rotasPreview.slice(0, 4).map((rota) => (
-                      <Badge
-                        key={`rota-${rota}`}
-                        variant="outline"
-                        className="font-bold text-[#103173] border-[#103173]/20 bg-white"
-                      >
-                        {rota}
-                      </Badge>
-                    ))}
-                    {onibusPreview.slice(0, 3).map((onibus) => (
-                      <Badge
-                        key={`onibus-${onibus}`}
-                        variant="outline"
-                        className="font-bold text-[#103173] border-[#73AABF]/30 bg-[#E4F2F1]"
-                      >
-                        {onibus}
-                      </Badge>
-                    ))}
-                    {motoristasPreview.slice(0, 2).map((motorista) => (
-                      <Badge
-                        key={`motorista-${motorista}`}
-                        variant="outline"
-                        className="font-bold text-[#103173] border-[#73AABF]/30 bg-[#E4F2F1]"
-                      >
-                        {motorista}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
               </CardContent>
-
               <CardFooter className="p-6 pt-0 flex flex-col gap-3">
-                <Button
-                  type="submit"
-                  className="w-full h-12 bg-[#23B99A] hover:bg-[#1d957c] text-white font-black shadow-lg shadow-[#23B99A]/20"
-                >
-                  {emEdicao ? (
-                    <>
-                      <Save className="h-4 w-4 mr-2" />
-                      SALVAR ALTERAÇÕES
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-4 w-4 mr-2" />
-                      CADASTRAR ADMINISTRADOR
-                    </>
-                  )}
+                <Button type="submit" className="w-full h-12 bg-[#23B99A] hover:bg-[#1d957c] text-white font-black shadow-lg shadow-[#23B99A]/20">
+                  {emEdicao ? <><Save className="h-4 w-4 mr-2" /> SALVAR ALTERAÇÕES</> : <><Plus className="h-4 w-4 mr-2" /> CADASTRAR ADMINISTRADOR</>}
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full h-11 border-2 border-[#103173] text-[#103173] font-black hover:bg-[#103173] hover:text-white"
-                  onClick={() => router.push("/admin/usuarios")}
-                >
+                <Button type="button" variant="outline" className="w-full h-11 border-2 border-[#103173] text-[#103173] font-black hover:bg-[#103173] hover:text-white" onClick={() => router.push("/admin/usuarios")}>
                   CANCELAR
                 </Button>
               </CardFooter>
             </Card>
-
-            <Card className="border-none shadow-md bg-white">
-              <CardContent className="p-4 flex items-start gap-3">
-                <div className="bg-[#103173]/10 p-2 rounded-lg">
-                  <Route className="h-4 w-4 text-[#103173]" />
-                </div>
-                <p className="text-xs font-bold text-[#103173] leading-relaxed">
-                  Dados mockados alinhados com as telas existentes: rotas `ROT-001/002/9901`,
-                  ônibus `JLS-1020`, motoristas `João Silva` e `Carla Nascimento`.
-                </p>
-              </CardContent>
-            </Card>
           </div>
         </form>
       </main>
-
       <FooterSection />
-
+      {/* Botões de Perfil (Fixo) */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#103173] text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-6 z-50 border-2 border-[#F2D022]/30 backdrop-blur-md">
         <div className="flex flex-col border-r border-white/20 pr-4">
           <span className="text-[9px] font-black uppercase text-[#F2D022] tracking-tighter">Modo de Teste</span>
           <span className="text-xs font-bold">Alternar Perfil</span>
         </div>
         <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="ghost"
-            className="hover:bg-white/10 text-white gap-2 font-bold"
-            onClick={() => router.push("/passageiro")}
-          >
-            <UserCircle className="h-4 w-4" /> Passageiro
-          </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            className="hover:bg-[#F2D022] hover:text-[#103173] text-white gap-2 font-bold transition-colors"
-            onClick={() => router.push("/motorista")}
-          >
-            <Bus className="h-4 w-4" /> Motorista
-          </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            className="bg-red-500 text-white gap-2 font-bold transition-colors shadow-lg shadow-red-500/20"
-            onClick={() => router.push("/admin")}
-          >
-            <ShieldAlert className="h-4 w-4" /> Admin
-          </Button>
+          <Button size="sm" variant="ghost" className="hover:bg-white/10 text-white gap-2 font-bold" onClick={() => router.push("/passageiro")}><UserCircle className="h-4 w-4" /> Passageiro</Button>
+          <Button size="sm" variant="ghost" className="hover:bg-[#F2D022] hover:text-[#103173] text-white gap-2 font-bold transition-colors" onClick={() => router.push("/motorista")}><Bus className="h-4 w-4" /> Motorista</Button>
+          <Button size="sm" variant="ghost" className="bg-red-500 text-white gap-2 font-bold transition-colors shadow-lg shadow-red-500/20" onClick={() => router.push("/admin")}><ShieldAlert className="h-4 w-4" /> Admin</Button>
         </div>
       </div>
     </div>
+  );
+}
+
+// 2. O Export Default agora envolve o conteúdo em Suspense
+export default function CadastroEdicaoAdministradorPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#E4F2F1] text-[#103173] font-bold">Carregando formulário...</div>}>
+      <FormularioCadastroAdministrador />
+    </Suspense>
   );
 }
 

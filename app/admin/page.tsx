@@ -107,6 +107,13 @@ export default function PaginaAdmin() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               variant="outline"
+              className="h-12 border-2 border-[#73AABF] text-[#103173] font-black hover:bg-[#73AABF]/15 transition-colors"
+              onClick={() => router.push("/admin/motoristas")}
+            >
+              <UserCircle className="h-4 w-4 mr-2" /> GESTÃO DE MOTORISTAS
+            </Button>
+            <Button
+              variant="outline"
               className="h-12 border-2 border-[#103173] text-[#103173] font-black hover:bg-[#103173] hover:text-white transition-colors"
               onClick={() => window.alert("Protótipo: exportar relatório da frota.")}
             >

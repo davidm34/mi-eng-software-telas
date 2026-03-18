@@ -185,13 +185,11 @@ export default function UsuariosPermissoesPage() {
 
   const abrirTelaCadastro = (usuario?: UsuarioAdministradorMock) => {
     if (!usuario) {
-      window.alert(
-        "Protótipo: abrir tela de Cadastro de Administrador. Essa etapa será construída na próxima tela.",
-      );
+      router.push("/admin/usuarios/cadastro?modo=novo");
       return;
     }
 
-    window.alert(`Protótipo: abrir edição do usuário ${usuario.id} (${usuario.nome}).`);
+    router.push(`/admin/usuarios/cadastro?id=${usuario.id}`);
   };
 
   const handleAlterarStatus = (usuario: UsuarioAdministradorMock) => {

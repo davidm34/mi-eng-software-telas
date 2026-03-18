@@ -45,7 +45,15 @@ export interface UsuarioAdministradorMock {
   observacoes: string;
 }
 
-const MODULOS_PADRAO: ModuloSistema[] = [
+export const PERFIS_ADMINISTRADOR_MOCK: PerfilAdministrador[] = [
+  "super_admin",
+  "gestor_frota",
+  "gestor_viagens",
+  "operacao_embarque",
+  "compliance",
+];
+
+export const MODULOS_SISTEMA_MOCK: ModuloSistema[] = [
   "Ônibus",
   "Motoristas",
   "Viagens",
@@ -57,6 +65,8 @@ const MODULOS_PADRAO: ModuloSistema[] = [
   "Histórico de Penalidades",
   "Histórico Operacional",
 ];
+
+const MODULOS_PADRAO: ModuloSistema[] = MODULOS_SISTEMA_MOCK;
 
 function montarPermissoes(
   niveisPorModulo: Partial<Record<ModuloSistema, NivelPermissao>>,

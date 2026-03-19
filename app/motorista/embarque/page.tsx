@@ -6,14 +6,14 @@ import { ArrowLeft, QrCode } from "lucide-react";
 
 export default function TelaEmbarque() {
   const router = useRouter();
-  const codigoViagem = "UEFS-7729-X"; 
+  const codigoViagem = "UEFS-7729-X";
 
   return (
     <div className="flex min-h-screen flex-col bg-[#E4F2F1] items-center justify-center p-4">
-      {/* Botão de Voltar */}
+      {/* Botão de Voltar - Agora com fundo branco para destaque no celular */}
       <button 
         onClick={() => router.back()}
-        className="absolute top-8 left-6 flex items-center gap-2 text-[#103173] font-black uppercase text-sm hover:opacity-70 transition-all"
+        className="absolute top-8 left-6 flex items-center gap-2 bg-white py-2 px-4 rounded-full shadow-md text-[#103173] font-black uppercase text-sm hover:opacity-70 transition-all z-10"
       >
         <ArrowLeft className="h-5 w-5" /> Voltar
       </button>
@@ -35,7 +35,7 @@ export default function TelaEmbarque() {
           {/* QR Code Simulado */}
           <div className="bg-white p-6 border-[6px] border-[#F2D022] rounded-[40px] mb-10 shadow-xl">
             <div className="bg-slate-50 w-56 h-56 flex items-center justify-center rounded-2xl border-2 border-dashed border-slate-200">
-               <QrCode className="h-40 w-40 text-[#103173]" />
+                <QrCode className="h-40 w-40 text-[#103173]" />
             </div>
           </div>
 

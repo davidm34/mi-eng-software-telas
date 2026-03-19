@@ -106,7 +106,7 @@ export default function PaginaMotorista() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#E4F2F1] pb-24">
-      <Navigation />
+      <Navigation isMotorista={true} />
       
       <main className="flex-1 w-full max-w-6xl mx-auto py-10 px-4">
         <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -132,7 +132,8 @@ export default function PaginaMotorista() {
               <TabsTrigger 
                 key={dia.id} 
                 value={dia.id} 
-                className="font-black text-xs md:text-sm uppercase tracking-widest data-[state=active]:bg-white data-[state=active]:text-[#103173] rounded-xl transition-all"
+                // Fonte reduzida no mobile para não encavalar
+                className="font-black text-[10px] md:text-sm uppercase tracking-widest data-[state=active]:bg-white data-[state=active]:text-[#103173] rounded-xl transition-all"
               >
                 {dia.label}
               </TabsTrigger>
@@ -156,7 +157,7 @@ export default function PaginaMotorista() {
                         
                         <div className="flex-1">
                           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b border-slate-50">
-                            <div className="space-y-1">
+                            <div className="space-y-1 w-full">
                               <Badge className={`${
                                 viagem.status === 'em_andamento' ? 'bg-[#23B99A]' : 
                                 viagem.status === 'cancelada' ? 'bg-red-500' : 
@@ -167,12 +168,12 @@ export default function PaginaMotorista() {
                               </Badge>
                               <CardTitle className="text-2xl font-black text-[#103173] flex flex-col pt-2">
                                   <span className="flex items-center gap-2 text-sm text-[#73AABF] font-bold uppercase tracking-widest italic">Rota {viagem.id}</span>
-                                  <div className="flex items-center gap-3 mt-1">
+                                  <div className="flex items-center flex-wrap gap-2 mt-1">
                                     <CircleDot className={`h-5 w-5 ${viagem.status === 'cancelada' ? 'text-red-500' : 'text-[#F2D022]'}`} /> 
-                                    {viagem.origem} 
-                                    <span className="text-[#73AABF] mx-2">→</span>
+                                    <span>{viagem.origem}</span>
+                                    <span className="text-[#73AABF]">→</span>
                                     <MapPin className={`h-5 w-5 ${viagem.status === 'cancelada' ? 'text-red-400' : 'text-[#103173]'}`} />
-                                    {viagem.destino}
+                                    <span>{viagem.destino}</span>
                                   </div>
                               </CardTitle>
                             </div>
@@ -228,11 +229,12 @@ export default function PaginaMotorista() {
                             </div>
                           )}
 
+                          {/* Ajuste nos botões: w-full no celular para ocupar a caixa toda */}
                           <CardFooter className="p-6 bg-slate-50 flex flex-col sm:flex-row gap-4 border-t border-slate-100">
                             <Button 
                               variant="outline" 
                               disabled={viagem.status === 'cancelada'}
-                              className="flex-1 h-14 border-2 border-[#103173] text-[#103173] font-black rounded-2xl hover:bg-[#103173] hover:text-white transition-all disabled:opacity-50"
+                              className="w-full sm:flex-1 h-14 border-2 border-[#103173] text-[#103173] font-black rounded-2xl hover:bg-[#103173] hover:text-white transition-all disabled:opacity-50"
                             >
                               <ClipboardList className="h-5 w-5 mr-2" /> LISTA DE PASSAGEIROS
                             </Button>
@@ -240,7 +242,7 @@ export default function PaginaMotorista() {
                             <Button 
                               disabled={viagem.status === 'cancelada'}
                               onClick={() => router.push("/motorista/embarque")}
-                              className={`flex-1 h-14 font-black rounded-2xl shadow-lg transition-all active:scale-95 disabled:bg-slate-300 disabled:shadow-none ${
+                              className={`w-full sm:flex-1 h-14 font-black rounded-2xl shadow-lg transition-all active:scale-95 disabled:bg-slate-300 disabled:shadow-none ${
                                 quorumNaoAtingido 
                                 ? 'bg-orange-500 hover:bg-orange-600 text-white shadow-orange-500/20' 
                                 : 'bg-[#103173] hover:bg-[#103B73] text-white shadow-[#103173]/20'

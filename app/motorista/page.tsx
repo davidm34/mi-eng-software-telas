@@ -22,7 +22,7 @@ export default function MotoristaPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#E4F2F1]">
-      <Navigation />
+      <Navigation isMotorista={true} />
       
       <main className="flex-1 flex flex-col items-center justify-center py-12 px-4">
         <div className="w-full max-w-md space-y-6">

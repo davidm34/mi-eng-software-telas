@@ -113,7 +113,7 @@ export default function PaginaPassageiro() {
         {/* <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" /> */}
 
         {/* Nav inline */}
-        <div className="max-w-lg mx-auto px-4 pt-4 pb-1 relative flex items-center justify-between">
+        <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 pt-4 pb-1 relative flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="bg-[#F2D022] p-1.5 rounded-lg">
               <Bus className="h-4 w-4 text-[#103173]" />
@@ -126,7 +126,7 @@ export default function PaginaPassageiro() {
         </div>
 
         {/* Hero copy */}
-        <div className="max-w-lg mx-auto px-4 pt-4 pb-7 relative">
+        <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 pt-4 pb-7 relative">
           <div className="flex items-center gap-2 mb-1">
             <Ticket className="h-4 w-4 text-[#F2D022]" />
             <span className="text-[11px] font-bold text-[#F2D022] uppercase tracking-widest">
@@ -144,7 +144,7 @@ export default function PaginaPassageiro() {
 
       {/* Seletor de dia — pill tabs */}
       <div className="sticky top-0 z-30 bg-[#f0f4f8]/95 backdrop-blur-md border-b border-[#103173]/5">
-        <div className="max-w-lg mx-auto px-4 py-3">
+        <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 py-3">
           <div className="flex gap-2">
             {DIAS_SEMANA.map((dia) => {
               const isActive = dia.id === diaAtivo;
@@ -175,7 +175,7 @@ export default function PaginaPassageiro() {
       </div>
 
       {/* Lista de viagens */}
-      <main className="flex-1 max-w-lg mx-auto w-full px-4 pt-5 pb-32">
+      <main className="flex-1 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full px-4 pt-5 pb-32">
         {/* Label do dia */}
         <div className="flex items-center justify-between mb-4">
           <span className="text-xs font-bold text-[#103173]/40 uppercase tracking-widest">
@@ -199,7 +199,7 @@ export default function PaginaPassageiro() {
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {viagensDoDia.map((viagem) => {
               const percentInscritos = Math.round((viagem.inscritos / viagem.vagasTotais) * 100);
               const quorumAtingido = viagem.inscritos >= viagem.quorum;

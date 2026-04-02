@@ -49,8 +49,10 @@ export default function MotoristaPage() {
             </div>
             <span className="text-lg font-extrabold text-white tracking-tight">Roteiro</span>
           </Link>
-          <Button className="bg-[#F2D022] hover:bg-[#d9ba1f] text-[#103173] font-bold rounded-md px-4 h-9">
-            <User className="w-4 h-4 mr-2" /> PERFIL
+          <Button asChild className="bg-[#F2D022] hover:bg-[#d9ba1f] text-[#103173] font-bold rounded-md px-4 h-9 cursor-pointer">
+            <Link href="/perfil">
+              <User className="w-4 h-4 mr-2" /> PERFIL
+            </Link>
           </Button>
         </div>
 

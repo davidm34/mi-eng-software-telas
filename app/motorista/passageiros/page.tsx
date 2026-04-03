@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Navigation } from "@/components/landing/navigation";
+import { FooterSection } from "@/components/landing/footer-section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,47 +17,21 @@ import {
   User,
   MapPin,
   CircleDot,
+  ClipboardList,
+  Bus,
+  UserCircle,
+  ShieldAlert
 } from "lucide-react";
 
 // Mock de dados dos passageiros
 const PASSAGEIROS_MOCK = [
-  {
-    id: 1,
-    nome: "Ana Beatriz Sousa",
-    matricula: "ALU-202401",
-    status: "embarcou",
-  },
-  {
-    id: 2,
-    nome: "Carlos Eduardo Silva",
-    matricula: "ALU-202402",
-    status: "pendente",
-  },
-  { id: 3, nome: "Fernanda Lima", matricula: "ALU-202403", status: "embarcou" },
-  {
-    id: 4,
-    nome: "João Pedro Alves",
-    matricula: "ALU-202404",
-    status: "pendente",
-  },
-  {
-    id: 5,
-    nome: "Maria Clara Nunes",
-    matricula: "ALU-202405",
-    status: "falta",
-  },
-  {
-    id: 6,
-    nome: "Pedro Henrique Santos",
-    matricula: "ALU-202406",
-    status: "pendente",
-  },
-  {
-    id: 7,
-    nome: "Rafael Souza Costa",
-    matricula: "ALU-202407",
-    status: "embarcou",
-  },
+  { id: 1, nome: "Ana Beatriz Sousa", matricula: "PROF-202401", status: "embarcou" },
+  { id: 2, nome: "Carlos Eduardo Silva", matricula: "PROF-202402", status: "pendente" },
+  { id: 3, nome: "Fernanda Lima", matricula: "PROF-202403", status: "embarcou" },
+  { id: 4, nome: "João Pedro Alves", matricula: "PROF-202404", status: "pendente" },
+  { id: 5, nome: "Maria Clara Nunes", matricula: "PROF-202405", status: "falta" },
+  { id: 6, nome: "Pedro Henrique Santos", matricula: "PROF-202406", status: "pendente" },
+  { id: 7, nome: "Rafael Souza Costa", matricula: "PROF-202407", status: "embarcou" },
 ];
 
 export default function ListaPassageiros() {
@@ -67,7 +43,7 @@ export default function ListaPassageiros() {
   const passageirosFiltrados = passageiros.filter(
     (p) =>
       p.nome.toLowerCase().includes(busca.toLowerCase()) ||
-      p.matricula.toLowerCase().includes(busca.toLowerCase()),
+      p.matricula.toLowerCase().includes(busca.toLowerCase())
   );
 
   // Calcula estatísticas
@@ -85,13 +61,17 @@ export default function ListaPassageiros() {
           };
         }
         return p;
-      }),
+      })
     );
   };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#E4F2F1] pb-24">
-      <main className="flex-1 w-full max-w-3xl mx-auto py-8 px-4">
+      {/* Navegação Padrão */}
+      <Navigation isMotorista={true} />
+
+      <main className="flex-1 w-full max-w-4xl mx-auto py-10 px-4">
+        
         {/* Botão de Voltar */}
         <button
           onClick={() => router.back()}
@@ -100,48 +80,63 @@ export default function ListaPassageiros() {
           <ArrowLeft className="h-5 w-5" /> Voltar
         </button>
 
-        {/* Cabeçalho da Rota */}
-        <div className="mb-8 space-y-4">
-          <h1 className="text-3xl font-black text-[#103173] tracking-tight">
-            Lista de Passageiros
-          </h1>
+        {/* Header Padronizado */}
+        <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-3">
+            <h1 className="text-4xl font-black text-[#103173] flex items-center gap-3 tracking-tight">
+              <div className="bg-[#F2D022] p-2 rounded-xl shadow-sm">
+                <ClipboardList className="h-10 w-10 text-[#103173]" />
+              </div>
+              Lista de Passageiros
+            </h1>
+            <p className="text-[#73AABF] font-bold text-lg">
+              Gerencie o embarque dos alunos nesta viagem.
+            </p>
+          </div>
+          <Badge
+            variant="outline"
+            className="w-fit border-2 border-[#103173] text-[#103173] font-black px-4 py-2 bg-white"
+          >
+            ROTA: ROT-0042
+          </Badge>
+        </header>
 
-          <Card className="border-none shadow-lg bg-[#103173] text-white rounded-3xl overflow-hidden">
-            <CardContent className="p-6">
-              <div className="flex flex-col sm:flex-row justify-between gap-4">
-                <div>
-                  <Badge className="bg-[#F2D022] text-[#103173] font-black uppercase mb-2 hover:bg-[#F2D022]">
-                    ROTA ROT-0042
-                  </Badge>
-                  <div className="flex items-center flex-wrap gap-2 text-sm font-bold mt-2">
-                    <CircleDot className="h-4 w-4 text-[#F2D022]" />
-                    <span>Salvador</span>
-                    <span className="text-[#73AABF]">→</span>
-                    <MapPin className="h-4 w-4 text-[#73AABF]" />
-                    <span>Feira de Santana</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 bg-white/10 p-3 rounded-2xl w-fit">
-                  <div className="text-center px-3 border-r border-white/20">
-                    <p className="text-[10px] text-[#73AABF] font-black uppercase tracking-widest">
-                      Total
-                    </p>
-                    <p className="text-xl font-black">{total}</p>
-                  </div>
-                  <div className="text-center px-3">
-                    <p className="text-[10px] text-[#23B99A] font-black uppercase tracking-widest">
-                      Embarcados
-                    </p>
-                    <p className="text-xl font-black text-[#23B99A]">
-                      {embarcados}
-                    </p>
-                  </div>
+        {/* Card Resumo da Viagem */}
+        <Card className="border-none shadow-lg bg-[#103173] text-white rounded-3xl overflow-hidden mb-8">
+          <CardContent className="p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="flex flex-col items-center sm:items-start w-full sm:w-auto">
+                <p className="text-[10px] text-[#73AABF] font-black uppercase tracking-widest mb-1">
+                  Trajeto
+                </p>
+                <div className="flex items-center flex-wrap justify-center sm:justify-start gap-2 text-sm md:text-base font-bold">
+                  <CircleDot className="h-5 w-5 text-[#F2D022]" />
+                  <span>Salvador</span>
+                  <span className="text-[#73AABF]">→</span>
+                  <MapPin className="h-5 w-5 text-[#73AABF]" />
+                  <span>Feira de Santana</span>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+
+              <div className="flex items-center gap-4 bg-white/10 p-3 rounded-2xl w-full sm:w-fit justify-center">
+                <div className="text-center px-4 border-r border-white/20">
+                  <p className="text-[10px] text-[#73AABF] font-black uppercase tracking-widest">
+                    Total
+                  </p>
+                  <p className="text-2xl font-black">{total}</p>
+                </div>
+                <div className="text-center px-4">
+                  <p className="text-[10px] text-[#23B99A] font-black uppercase tracking-widest">
+                    Embarcados
+                  </p>
+                  <p className="text-2xl font-black text-[#23B99A]">
+                    {embarcados}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Barra de Pesquisa */}
         <div className="relative mb-6 shadow-sm rounded-2xl">
@@ -160,8 +155,8 @@ export default function ListaPassageiros() {
         {/* Lista de Passageiros */}
         <div className="space-y-3">
           {passageirosFiltrados.length === 0 ? (
-            <div className="text-center py-10">
-              <p className="text-[#73AABF] font-bold">
+            <div className="text-center py-10 bg-white rounded-3xl shadow-sm border border-slate-100">
+              <p className="text-[#73AABF] font-bold text-lg">
                 Nenhum passageiro encontrado.
               </p>
             </div>
@@ -223,7 +218,7 @@ export default function ListaPassageiros() {
                         {passageiro.status}
                       </Badge>
 
-                      {/* Botão de Check-in Manual (Só aparece se estiver pendente) */}
+                      {/* Botão de Check-in Manual */}
                       {passageiro.status !== "falta" && (
                         <Button
                           onClick={() => alternarCheckIn(passageiro.id)}
@@ -247,6 +242,47 @@ export default function ListaPassageiros() {
           )}
         </div>
       </main>
+
+      <FooterSection />
+
+      {/* DEV BAR */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#103173] text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-6 z-50 border-2 border-[#F2D022]/30 backdrop-blur-md">
+        <div className="flex flex-col border-r border-white/20 pr-4">
+          <span className="text-[9px] font-black uppercase text-[#F2D022] tracking-tighter">
+            Modo de Teste
+          </span>
+          <span className="text-xs font-bold">Alternar Perfil</span>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="ghost"
+            className="hover:bg-white/10 text-white gap-2 font-bold"
+            onClick={() => router.push("/passageiro")}
+          >
+            <UserCircle className="h-4 w-4" /> Passageiro
+          </Button>
+
+          <Button
+            size="sm"
+            variant="ghost"
+            className="bg-[#F2D022] text-[#103173] gap-2 font-bold transition-colors"
+            onClick={() => router.push("/motorista")}
+          >
+            <Bus className="h-4 w-4" /> Motorista
+          </Button>
+
+          <Button
+            size="sm"
+            variant="ghost"
+            className="hover:bg-red-500 hover:text-white text-white gap-2 font-bold transition-colors"
+            onClick={() => router.push("/admin")}
+          >
+            <ShieldAlert className="h-4 w-4" /> Admin
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

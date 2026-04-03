@@ -111,7 +111,7 @@ export default function ConfirmacaoInscricao() {
             <div className="flex gap-3 bg-amber-50 border border-amber-100 p-4 rounded-xl">
               <AlertCircle className="h-5 w-5 text-amber-600 shrink-0" />
               <p className="text-sm text-amber-800 font-medium">
-                A viagem depende do **quorum mínimo** para ser confirmada. Você será notificado caso a rota seja cancelada.
+                Após confirmação, será gerado um código que deve ser mostrado para o motorista no embarque.
               </p>
             </div>
           </CardContent>

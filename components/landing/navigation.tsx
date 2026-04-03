@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Bus, User } from "lucide-react";
+import { Bus, User, PhoneCall } from "lucide-react"; // Importamos o ícone de telefone
 
 // Adicionamos a propriedade "isMotorista" para controlar o que aparece
 export function Navigation({ isMotorista = false }: { isMotorista?: boolean }) {
@@ -16,22 +16,35 @@ export function Navigation({ isMotorista = false }: { isMotorista?: boolean }) {
           <span className="text-xl font-bold tracking-tight">Roteiro</span>
         </Link>
 
-        <div className="flex items-center gap-6 text-sm font-medium">
+        <div className="flex items-center gap-4 sm:gap-6 text-sm font-medium">
           {/* Só mostra esses links se NÃO for motorista */}
           {!isMotorista && (
             <>
-              <Link href="#" className="hover:text-[#F2D022] transition-colors">
+              <Link href="#" className="hover:text-[#F2D022] transition-colors hidden md:block">
                 Rotas
               </Link>
-              <Link href="#" className="hover:text-[#F2D022] transition-colors">
+              <Link href="#" className="hover:text-[#F2D022] transition-colors hidden md:block">
                 Minhas Viagens
               </Link>
             </>
           )}
 
+          {/* Botão de Contatos de Emergência / Suporte (Visível para todos) */}
+          <Link 
+            href="/suporte" 
+            className="flex items-center gap-1.5 text-white/90 hover:text-[#F2D022] transition-colors"
+            title="Contatos de Emergência"
+          >
+            <PhoneCall className="w-4 h-4" />
+            <span className="hidden sm:inline">Suporte</span>
+          </Link>
+          
+          {/* Botão de Perfil */}
           <Button asChild className="bg-[#F2D022] hover:bg-[#d9ba1f] text-[#103173] font-bold rounded-md px-4 h-9 cursor-pointer">
             <Link href="/perfil">
-              <User className="w-4 h-4 mr-2" /> PERFIL
+              <User className="w-4 h-4 mr-2 hidden sm:inline" /> 
+              <User className="w-4 h-4 sm:hidden" /> {/* Ícone sem margem no mobile */}
+              <span className="hidden sm:inline">PERFIL</span>
             </Link>
           </Button>
         </div>

@@ -17,7 +17,6 @@ import {
   MapPin,
   Users,
   Clock,
-  QrCode,
   ClipboardList,
   Bus,
   CircleDot,
@@ -26,6 +25,7 @@ import {
   CalendarDays,
   XCircle,
   AlertTriangle,
+  ArrowLeft,
 } from "lucide-react";
 
 const QUORUM_MINIMO = 1;
@@ -121,6 +121,14 @@ export default function PaginaMotorista() {
       <Navigation isMotorista={true} />
 
       <main className="flex-1 w-full max-w-6xl mx-auto py-10 px-4">
+        {/* Botão de Voltar */}
+        <button
+          onClick={() => router.push("/motorista")}
+          className="flex items-center gap-2 bg-white py-2 px-4 rounded-full shadow-md text-[#103173] font-black uppercase text-sm hover:opacity-70 transition-all mb-8 w-fit"
+        >
+          <ArrowLeft className="h-5 w-5" /> Voltar
+        </button>
+
         <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-3">
             <h1 className="text-4xl font-black text-[#103173] flex items-center gap-3 tracking-tight">
@@ -147,7 +155,6 @@ export default function PaginaMotorista() {
               <TabsTrigger
                 key={dia.id}
                 value={dia.id}
-                // Fonte reduzida no mobile para não encavalar
                 className="font-black text-[10px] md:text-sm uppercase tracking-widest data-[state=active]:bg-white data-[state=active]:text-[#103173] rounded-xl transition-all"
               >
                 {dia.label}
@@ -301,29 +308,18 @@ export default function PaginaMotorista() {
                             </div>
                           )}
 
-                          {/* Ajuste nos botões: w-full no celular para ocupar a caixa toda */}
-                          <CardFooter className="p-6 bg-slate-50 flex flex-col sm:flex-row gap-4 border-t border-slate-100">
+                          {/* RODAPÉ COM APENAS UM BOTÃO (OCUPANDO TUDO) */}
+                          <CardFooter className="p-6 bg-slate-50 flex border-t border-slate-100">
                             <Button
                               variant="outline"
                               disabled={viagem.status === "cancelada"}
-                              onClick={() => router.push("/motorista/passageiros")}
-                              className="w-full sm:flex-1 h-14 border-2 border-[#103173] text-[#103173] font-black rounded-2xl hover:bg-[#103173] hover:text-white transition-all disabled:opacity-50"
+                              onClick={() =>
+                                router.push("/motorista/passageiros")
+                              }
+                              className="w-full h-14 border-2 border-[#103173] text-[#103173] font-black rounded-2xl hover:bg-[#103173] hover:text-white transition-all disabled:opacity-50"
                             >
                               <ClipboardList className="h-5 w-5 mr-2" /> LISTA
                               DE PASSAGEIROS
-                            </Button>
-
-                            <Button
-                              disabled={viagem.status === "cancelada"}
-                              onClick={() => router.push("/motorista/embarque")}
-                              className={`w-full sm:flex-1 h-14 font-black rounded-2xl shadow-lg transition-all active:scale-95 disabled:bg-slate-300 disabled:shadow-none ${
-                                quorumNaoAtingido
-                                  ? "bg-orange-500 hover:bg-orange-600 text-white shadow-orange-500/20"
-                                  : "bg-[#103173] hover:bg-[#103B73] text-white shadow-[#103173]/20"
-                              }`}
-                            >
-                              <QrCode className="h-5 w-5 mr-2" /> GERAR CÓDIGO
-                              DE EMBARQUE
                             </Button>
                           </CardFooter>
                         </div>

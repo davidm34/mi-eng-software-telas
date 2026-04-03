@@ -23,6 +23,7 @@ import {
   UserRound,
   Wrench,
   PencilLine,
+  GraduationCap,
 } from "lucide-react";
 
 type FiltroStatus = "todos" | StatusOnibus;
@@ -363,21 +364,50 @@ export default function PaginaAdmin() {
       </main>
       <FooterSection />
 
-      {/* --- BARRA DE NAVEGAÇÃO ENTRE PERFIS --- */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#103173] text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-6 z-50 border-2 border-[#F2D022]/30 backdrop-blur-md">
-        <div className="flex flex-col border-r border-white/20 pr-4">
-          <span className="text-[9px] font-black uppercase text-[#F2D022] tracking-tighter">Modo de Teste</span>
-          <span className="text-xs font-bold">Alternar Perfil</span>
+      {/* --- BARRA DE NAVEGAÇÃO ENTRE PERFIS (DEVELOPER BAR) --- */}
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-[#103173] text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-4 z-50 border border-[#F2D022]/20 backdrop-blur-md w-[90%] md:w-auto overflow-x-auto">
+        <div className="flex flex-col border-r border-white/15 pr-3 shrink-0">
+          <span className="text-[8px] font-extrabold uppercase text-[#F2D022] tracking-tight">
+            Dev
+          </span>
+          <span className="text-[10px] font-bold text-white/70">Perfis</span>
         </div>
-        <div className="flex gap-2">
-          <Button size="sm" variant="ghost" className="hover:bg-white/10 text-white gap-2 font-bold" onClick={() => router.push("/passageiro")}>
-            <UserCircle className="h-4 w-4" /> Passageiro
+
+        <div className="flex gap-1">
+          <Button
+            size="sm"
+            variant="ghost"
+            className="hover:bg-white/10 text-white gap-1.5 font-bold text-xs h-8 px-2.5 shrink-0"
+            onClick={() => router.push("/passageiro")}
+          >
+            <UserCircle className="h-3.5 w-3.5" /> Passageiro
           </Button>
-          <Button size="sm" variant="ghost" className="hover:bg-[#F2D022] hover:text-[#103173] text-white gap-2 font-bold transition-colors" onClick={() => router.push("/motorista")}>
-            <Bus className="h-4 w-4" /> Motorista
+
+          <Button
+            size="sm"
+            variant="ghost"
+            className="hover:bg-white/10 text-white gap-1.5 font-bold text-xs h-8 px-2.5 shrink-0"
+            onClick={() => router.push("/professor")}
+          >
+            <GraduationCap className="h-3.5 w-3.5" /> Professor
           </Button>
-          <Button size="sm" variant="ghost" className="bg-red-500 text-white gap-2 font-bold transition-colors shadow-lg shadow-red-500/20" onClick={() => router.push("/admin")}>
-            <ShieldAlert className="h-4 w-4" /> Admin
+
+          <Button
+            size="sm"
+            variant="ghost"
+            className="hover:bg-[#F2D022] hover:text-[#103173] text-white gap-1.5 font-bold text-xs h-8 px-2.5 transition-colors shrink-0"
+            onClick={() => router.push("/motorista")}
+          >
+            <Bus className="h-3.5 w-3.5" /> Motorista
+          </Button>
+
+          <Button
+            size="sm"
+            variant="ghost"
+            className="hover:bg-red-500 hover:text-white text-white gap-1.5 font-bold text-xs h-8 px-2.5 transition-colors shrink-0"
+            onClick={() => router.push("/admin")}
+          >
+            <ShieldAlert className="h-3.5 w-3.5" /> Admin
           </Button>
         </div>
       </div>

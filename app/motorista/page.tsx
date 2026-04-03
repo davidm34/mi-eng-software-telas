@@ -17,7 +17,7 @@ import {
   PlayCircle,
   Flag,
   UserCircle,
-  ShieldAlert
+  ShieldAlert,
 } from "lucide-react";
 
 const VIAGENS = [
@@ -30,7 +30,7 @@ const VIAGENS = [
     passageirosConfirmados: 38,
     vagasTotais: 44,
     dia: "Segunda-feira",
-    statusInicial: "pronta", 
+    statusInicial: "pronta",
   },
   {
     id: "VG-0043",
@@ -41,15 +41,15 @@ const VIAGENS = [
     passageirosConfirmados: 42,
     vagasTotais: 44,
     dia: "Segunda-feira",
-    statusInicial: "bloqueada", 
-  }
+    statusInicial: "bloqueada",
+  },
 ];
 
-function ViagemCard({ viagem }: { viagem: typeof VIAGENS[0] }) {
+function ViagemCard({ viagem }: { viagem: (typeof VIAGENS)[0] }) {
   const router = useRouter();
-  const [statusViagem, setStatusViagem] = useState<"bloqueada" | "pronta" | "em_curso" | "finalizada">(
-    viagem.statusInicial as any
-  );
+  const [statusViagem, setStatusViagem] = useState<
+    "bloqueada" | "pronta" | "em_curso" | "finalizada"
+  >(viagem.statusInicial as any);
 
   const handleCheckIn = () => {
     router.push("/motorista/embarque");
@@ -68,10 +68,16 @@ function ViagemCard({ viagem }: { viagem: typeof VIAGENS[0] }) {
       <div className="bg-white rounded-2xl overflow-hidden shadow-[0_1px_3px_rgba(16,49,115,0.06),0_8px_24px_rgba(16,49,115,0.04)]">
         <div className="bg-[#103173]/5 px-4 py-3 flex items-center justify-between border-b border-[#103173]/5">
           <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${statusViagem === 'em_curso' ? 'bg-[#F2D022]' : statusViagem === 'bloqueada' ? 'bg-slate-300' : 'bg-[#23B99A]'} ${statusViagem !== 'bloqueada' && statusViagem !== 'finalizada' ? 'animate-pulse' : ''}`} />
-            <span className="text-xs font-extrabold text-[#103173] uppercase tracking-wider">{viagem.id}</span>
+            <div
+              className={`w-2 h-2 rounded-full ${statusViagem === "em_curso" ? "bg-[#F2D022]" : statusViagem === "bloqueada" ? "bg-slate-300" : "bg-[#23B99A]"} ${statusViagem !== "bloqueada" && statusViagem !== "finalizada" ? "animate-pulse" : ""}`}
+            />
+            <span className="text-xs font-extrabold text-[#103173] uppercase tracking-wider">
+              {viagem.id}
+            </span>
           </div>
-          <span className="text-xs font-bold text-[#103173]/40">{viagem.dia}</span>
+          <span className="text-xs font-bold text-[#103173]/40">
+            {viagem.dia}
+          </span>
         </div>
 
         <div className="p-5">
@@ -83,12 +89,20 @@ function ViagemCard({ viagem }: { viagem: typeof VIAGENS[0] }) {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline justify-between">
-                <p className="text-lg font-extrabold text-[#103173]">{viagem.origem}</p>
-                <span className="text-sm font-bold text-[#103173]/50 ml-2 shrink-0">{viagem.horarioPartida}</span>
+                <p className="text-lg font-extrabold text-[#103173]">
+                  {viagem.origem}
+                </p>
+                <span className="text-sm font-bold text-[#103173]/50 ml-2 shrink-0">
+                  {viagem.horarioPartida}
+                </span>
               </div>
               <div className="flex items-baseline justify-between mt-4">
-                <p className="text-lg font-extrabold text-[#103173]">{viagem.destino}</p>
-                <span className="text-sm font-bold text-[#103173]/50 ml-2 shrink-0">{viagem.horarioChegada}</span>
+                <p className="text-lg font-extrabold text-[#103173]">
+                  {viagem.destino}
+                </p>
+                <span className="text-sm font-bold text-[#103173]/50 ml-2 shrink-0">
+                  {viagem.horarioChegada}
+                </span>
               </div>
             </div>
           </div>
@@ -96,39 +110,70 @@ function ViagemCard({ viagem }: { viagem: typeof VIAGENS[0] }) {
           <div className="flex items-center gap-3 p-3 bg-[#103173]/[0.03] rounded-xl mb-5">
             <Users className="h-5 w-5 text-[#103173]/60" />
             <div className="flex-1">
-              <p className="text-xs font-bold text-[#103173]/40 uppercase tracking-wider">Passageiros</p>
-              <p className="text-lg font-extrabold text-[#103173]">{viagem.passageirosConfirmados} <span className="text-sm font-bold text-[#103173]/30">/ {viagem.vagasTotais}</span></p>
+              <p className="text-xs font-bold text-[#103173]/40 uppercase tracking-wider">
+                Passageiros
+              </p>
+              <p className="text-lg font-extrabold text-[#103173]">
+                {viagem.passageirosConfirmados}{" "}
+                <span className="text-sm font-bold text-[#103173]/30">
+                  / {viagem.vagasTotais}
+                </span>
+              </p>
             </div>
           </div>
 
           <div className="flex flex-col gap-3">
             {statusViagem !== "finalizada" && (
-              <button onClick={handleCheckIn} className="w-full py-4 rounded-2xl text-lg font-extrabold bg-[#23B99A] text-white hover:bg-[#1fa889] active:scale-[0.97] transition-all shadow-lg flex items-center justify-center gap-3">
+              <button
+                onClick={handleCheckIn}
+                className="w-full py-4 rounded-2xl text-lg font-extrabold bg-[#23B99A] text-white hover:bg-[#1fa889] active:scale-[0.97] transition-all shadow-lg flex items-center justify-center gap-3"
+              >
                 <CheckCircle2 className="h-6 w-6" /> Fazer Check-in
               </button>
             )}
             <button
               onClick={handleAcaoViagem}
-              disabled={statusViagem === "bloqueada" || statusViagem === "finalizada"}
+              disabled={
+                statusViagem === "bloqueada" || statusViagem === "finalizada"
+              }
               className={`w-full py-4 rounded-2xl text-lg font-extrabold transition-all duration-300 flex items-center justify-center gap-3 ${
-                statusViagem === "bloqueada" ? "bg-slate-200 text-slate-400" : 
-                statusViagem === "pronta" ? "bg-[#103173] text-white" : 
-                statusViagem === "em_curso" ? "bg-[#F2D022] text-[#103173]" : "bg-slate-100 text-slate-400"
+                statusViagem === "bloqueada"
+                  ? "bg-slate-200 text-slate-400"
+                  : statusViagem === "pronta"
+                    ? "bg-[#103173] text-white"
+                    : statusViagem === "em_curso"
+                      ? "bg-[#F2D022] text-[#103173]"
+                      : "bg-slate-100 text-slate-400"
               }`}
             >
-              {statusViagem === "bloqueada" ? "Aguardando Horário" : statusViagem === "pronta" ? "Iniciar Viagem" : statusViagem === "em_curso" ? "Confirmar Chegada" : "Viagem Concluída"}
+              {statusViagem === "bloqueada"
+                ? "Aguardando Horário"
+                : statusViagem === "pronta"
+                  ? "Iniciar Viagem"
+                  : statusViagem === "em_curso"
+                    ? "Confirmar Chegada"
+                    : "Viagem Concluída"}
             </button>
           </div>
         </div>
       </div>
-      
-      <Link href={`/motorista/informacao?viagem=${viagem.id}`} className="block -mt-4">
+
+      <Link
+        href={`/motorista/informacao?viagem=${viagem.id}`}
+        className="block -mt-4"
+      >
         <div className="flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#F2D022]/15 flex items-center justify-center"><Info className="h-5 w-5 text-[#b8960a]" /></div>
+            <div className="w-10 h-10 rounded-xl bg-[#F2D022]/15 flex items-center justify-center">
+              <Info className="h-5 w-5 text-[#b8960a]" />
+            </div>
             <div>
-              <p className="text-sm font-bold text-[#103173]">Informações da Escala</p>
-              <p className="text-[11px] text-[#103173]/40 font-medium">Ver detalhes e lista de passageiros</p>
+              <p className="text-sm font-bold text-[#103173]">
+                Informações da Escala
+              </p>
+              <p className="text-[11px] text-[#103173]/40 font-medium">
+                Ver detalhes e lista de passageiros
+              </p>
             </div>
           </div>
           <ChevronRight className="h-5 w-5 text-[#103173]/20" />
@@ -149,10 +194,16 @@ export default function MotoristaPage() {
         <header className="mb-8">
           <div className="flex items-center gap-2 mb-1">
             <Bus className="h-4 w-4 text-[#103173]" />
-            <span className="text-[11px] font-bold text-[#103173] uppercase tracking-widest">Painel do Motorista</span>
+            <span className="text-[11px] font-bold text-[#103173] uppercase tracking-widest">
+              Painel do Motorista
+            </span>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#103173] tracking-tight">Suas viagens de hoje</h1>
-          <p className="text-[#73AABF] text-sm mt-1 font-medium">Confira os detalhes e faça a gestão do embarque.</p>
+          <h1 className="text-3xl font-extrabold text-[#103173] tracking-tight">
+            Suas viagens de hoje
+          </h1>
+          <p className="text-[#73AABF] text-sm mt-1 font-medium">
+            Confira os detalhes e faça a gestão do embarque.
+          </p>
         </header>
 
         {VIAGENS.map((viagem) => (

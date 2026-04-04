@@ -8,11 +8,11 @@ export function FooterSection() {
       <div className="container max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-2">
           <Bus className="h-6 w-6 text-[#F2D022]" />
-          <span className="text-xl font-bold tracking-tight text-white">Roteiro</span>
+          <span className="text-xl font-bold tracking-tight text-white">Rota</span>
         </div>
-        
+
         <p className="text-sm opacity-80 font-medium">
-          © 2024 Roteiro - Sistema de Gestão de Viagens Universitárias
+          © 2024 Rota UEFS- Sistema de Gestão de Viagens Universitárias
         </p>
 
         <div className="flex gap-4">

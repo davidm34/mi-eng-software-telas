@@ -33,7 +33,7 @@ export default function PaginaProfessor() {
   const router = useRouter();
   const [diaAtivo, setDiaAtivo] = useState("segunda");
   const [modalConvidado, setModalConvidado] = useState<string | null>(null);
-  
+
   // Estado para os botões de modalidade da viagem principal e do convidado
   const [modalidades, setModalidades] = useState<Record<string, "ida" | "ida-volta">>({});
   const [modalidadeConvidado, setModalidadeConvidado] = useState<"ida" | "ida-volta">("ida");
@@ -52,7 +52,7 @@ export default function PaginaProfessor() {
             <div className="bg-[#F2D022] p-1.5 rounded-lg">
               <Bus className="h-4 w-4 text-[#103173]" />
             </div>
-            <span className="text-lg font-extrabold text-white tracking-tight">Roteiro</span>
+            <span className="text-lg font-extrabold text-white tracking-tight">Rota UEFS</span>
           </Link>
           <Button className="bg-[#F2D022] hover:bg-[#d9ba1f] text-[#103173] font-bold rounded-md px-4 h-9">
             <User className="w-4 h-4 mr-2" /> MEU PERFIL
@@ -85,9 +85,9 @@ export default function PaginaProfessor() {
       <main className="flex-1 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full px-4 pt-5 pb-32">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {viagensDoDia.map((viagem) => {
-             const modalidadeAtual = modalidades[viagem.id] || "ida";
+            const modalidadeAtual = modalidades[viagem.id] || "ida";
 
-             return (
+            return (
               <div key={viagem.id} className="bg-white rounded-2xl overflow-hidden shadow-sm p-4">
                 <div className="flex items-start gap-3 mb-6">
                   <div className="flex flex-col items-center pt-0.5 shrink-0">
@@ -115,20 +115,20 @@ export default function PaginaProfessor() {
                   ) : (
                     <div className="space-y-3">
                       <div className="flex gap-2">
-                        <button 
+                        <button
                           onClick={() => selecionarModalidade(viagem.id, "ida")}
                           className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${modalidadeAtual === "ida" ? "bg-[#103173] text-white shadow-md" : "bg-[#f0f4f8] text-[#103173]/60 hover:bg-[#103173]/5"}`}
                         >
                           Apenas Ida
                         </button>
-                        <button 
+                        <button
                           onClick={() => selecionarModalidade(viagem.id, "ida-volta")}
                           className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${modalidadeAtual === "ida-volta" ? "bg-[#103173] text-white shadow-md" : "bg-[#f0f4f8] text-[#103173]/60 hover:bg-[#103173]/5"}`}
                         >
                           Ida e Volta
                         </button>
                       </div>
-                      
+
                       <Button className="w-full bg-[#103173] text-white hover:bg-[#0d2a63]">
                         <Ticket className="h-4 w-4 mr-2" /> Inscrever-me
                       </Button>
@@ -137,8 +137,8 @@ export default function PaginaProfessor() {
 
                   <div className="w-full h-px bg-[#103173]/5 my-1" />
 
-                  <Button 
-                    variant="secondary" 
+                  <Button
+                    variant="secondary"
                     className="w-full bg-[#F2D022]/10 text-[#b8960a] hover:bg-[#F2D022]/20 font-bold"
                     onClick={() => {
                       setModalidadeConvidado("ida"); // Reseta para 'ida' ao abrir
@@ -149,7 +149,7 @@ export default function PaginaProfessor() {
                   </Button>
                 </div>
               </div>
-             )
+            )
           })}
         </div>
       </main>
@@ -161,7 +161,7 @@ export default function PaginaProfessor() {
             <button onClick={() => setModalConvidado(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
               <X className="h-5 w-5" />
             </button>
-            
+
             <h2 className="text-lg font-extrabold text-[#103173] mb-1">Inscrever Convidado</h2>
             <p className="text-xs text-gray-500 mb-5">Você está usando sua prioridade para adicionar alguém à lista.</p>
 
@@ -175,13 +175,13 @@ export default function PaginaProfessor() {
               <div className="space-y-1">
                 <Label className="text-xs font-bold text-[#103173]">Modalidade da Viagem</Label>
                 <div className="flex gap-2">
-                  <button 
+                  <button
                     onClick={() => setModalidadeConvidado("ida")}
                     className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${modalidadeConvidado === "ida" ? "bg-[#103173] text-white shadow-md" : "bg-[#f0f4f8] text-[#103173]/60 hover:bg-[#103173]/5"}`}
                   >
                     Apenas Ida
                   </button>
-                  <button 
+                  <button
                     onClick={() => setModalidadeConvidado("ida-volta")}
                     className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${modalidadeConvidado === "ida-volta" ? "bg-[#103173] text-white shadow-md" : "bg-[#f0f4f8] text-[#103173]/60 hover:bg-[#103173]/5"}`}
                   >
@@ -190,7 +190,7 @@ export default function PaginaProfessor() {
                 </div>
               </div>
 
-              <Button 
+              <Button
                 className="w-full bg-[#23B99A] hover:bg-[#1d9980] text-white font-bold mt-2"
                 onClick={() => { alert("Convidado inscrito com sucesso!"); setModalConvidado(null); }}
               >

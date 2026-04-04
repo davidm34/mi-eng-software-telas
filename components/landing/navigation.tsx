@@ -13,15 +13,14 @@ export function Navigation({ isMotorista = false }: { isMotorista?: boolean }) {
           <div className="bg-[#F2D022] p-1.5 rounded-md">
             <Bus className="h-5 w-5 text-[#103173]" />
           </div>
-          <span className="text-xl font-bold tracking-tight">Roteiro</span>
+          <span className="text-xl font-bold tracking-tight">Rota UEFS</span>
         </Link>
 
         <div className="flex items-center gap-6 text-sm font-medium">
           {/* Só mostra esses links se NÃO for motorista */}
-          {!isMotorista && (
+          {isMotorista && (
             <>
               <Link href="#" className="hover:text-[#F2D022] transition-colors">
-                Rotas
               </Link>
               <Link href="#" className="hover:text-[#F2D022] transition-colors">
                 Minhas Viagens

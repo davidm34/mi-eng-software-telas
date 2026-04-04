@@ -16,7 +16,7 @@ export default function TelaLogin() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // Simulando um delay de rede
     setTimeout(() => {
       // Por padrão, vamos mandar para a tela de passageiro
@@ -37,7 +37,7 @@ export default function TelaLogin() {
           </div>
           <div className="space-y-1">
             <CardTitle className="text-3xl font-black text-[#103173] tracking-tight">
-              ROTEIRO UEFS
+              Rota UEFS
             </CardTitle>
             <CardDescription className="text-[#73AABF] font-bold">
               Entre com sua matrícula para acessar o transporte
@@ -51,15 +51,15 @@ export default function TelaLogin() {
               <Label htmlFor="matricula" className="text-[#103173] font-bold ml-1">Matrícula</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-5 w-5 text-[#73AABF]" />
-                <Input 
-                  id="matricula" 
-                  placeholder="000000000" 
+                <Input
+                  id="matricula"
+                  placeholder="000000000"
                   className="pl-10 h-12 border-[#73AABF]/20 focus:border-[#103173] focus:ring-[#103173] rounded-xl font-medium"
                   required
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-1">
                 <Label htmlFor="pass" className="text-[#103173] font-bold">Senha</Label>
@@ -69,10 +69,10 @@ export default function TelaLogin() {
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-5 w-5 text-[#73AABF]" />
-                <Input 
-                  id="pass" 
-                  type="password" 
-                  placeholder="••••••••" 
+                <Input
+                  id="pass"
+                  type="password"
+                  placeholder="••••••••"
                   className="pl-10 h-12 border-[#73AABF]/20 focus:border-[#103173] focus:ring-[#103173] rounded-xl font-medium"
                   required
                 />
@@ -81,14 +81,14 @@ export default function TelaLogin() {
           </CardContent>
 
           <CardFooter className="flex flex-col gap-4 pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isLoading}
               className="w-full h-14 bg-[#103173] hover:bg-[#103B73] text-white font-black text-lg rounded-xl shadow-lg transition-all active:scale-95"
             >
               {isLoading ? "CARREGANDO..." : "ENTRAR NO SISTEMA"}
             </Button>
-            
+
             <div className="flex items-center gap-2 text-[#73AABF] text-xs font-bold uppercase tracking-widest mt-2">
               <ShieldCheck className="h-4 w-4" />
               Acesso Restrito à Comunidade Acadêmica

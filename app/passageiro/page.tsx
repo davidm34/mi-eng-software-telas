@@ -53,7 +53,7 @@ export default function PaginaAluno() {
             <div className="bg-[#F2D022] p-1.5 rounded-lg">
               <Bus className="h-4 w-4 text-[#103173]" />
             </div>
-            <span className="text-lg font-extrabold text-white tracking-tight">Roteiro</span>
+            <span className="text-lg font-extrabold text-white tracking-tight">Rota UEFS</span>
           </Link>
           <Button className="bg-[#F2D022] hover:bg-[#d9ba1f] text-[#103173] font-bold rounded-md px-4 h-9">
             <User className="w-4 h-4 mr-2" /> PERFIL
@@ -144,13 +144,13 @@ export default function PaginaAluno() {
                     <div>
                       <label className="text-[10px] font-bold text-[#103173]/60 uppercase tracking-wider mb-1.5 block">Modalidade da Viagem</label>
                       <div className="flex gap-2">
-                        <button 
+                        <button
                           onClick={() => selecionarModalidade(viagem.id, "ida")}
                           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${modalidadeAtual === "ida" ? "bg-[#103173] text-white shadow-md" : "bg-white border border-[#103173]/10 text-[#103173] hover:bg-[#103173]/5"}`}
                         >
                           Apenas Ida
                         </button>
-                        <button 
+                        <button
                           onClick={() => selecionarModalidade(viagem.id, "ida-volta")}
                           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${modalidadeAtual === "ida-volta" ? "bg-[#103173] text-white shadow-md" : "bg-white border border-[#103173]/10 text-[#103173] hover:bg-[#103173]/5"}`}
                         >
@@ -158,7 +158,7 @@ export default function PaginaAluno() {
                         </button>
                       </div>
                     </div>
-                    
+
                     <button onClick={() => router.push("/passageiro/confirmacao")} className="w-full py-3.5 rounded-xl text-sm font-extrabold bg-[#103173] text-white shadow-lg flex items-center justify-center gap-2 hover:bg-[#0d2a63] transition-colors">
                       <Ticket className="h-4 w-4" /> Inscrever-se nesta rota
                     </button>
@@ -169,7 +169,7 @@ export default function PaginaAluno() {
           })}
         </div>
       </main>
-      
+
       {/* Dev Bar */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-[#103173] text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-4 z-50 border border-[#F2D022]/20 backdrop-blur-md w-[90%] md:w-auto overflow-x-auto">
         <div className="flex flex-col border-r border-white/15 pr-3 shrink-0">

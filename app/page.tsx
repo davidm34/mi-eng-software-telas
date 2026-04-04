@@ -63,7 +63,11 @@ export default function TelaLogin() {
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-1">
                 <Label htmlFor="pass" className="text-[#103173] font-bold">Senha</Label>
-                <button type="button" className="text-xs font-bold text-[#73AABF] hover:text-[#103173]">
+                <button 
+                  type="button" 
+                  onClick={() => router.push("/recuperar-senha")}
+                  className="text-xs font-bold text-[#73AABF] hover:text-[#103173]"
+                >
                   Esqueceu a senha?
                 </button>
               </div>

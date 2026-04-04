@@ -1,22 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ArrowLeft, Scan, Keyboard, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, QrCode } from "lucide-react";
 
-export default function ValidarCodigoPassageiro() {
+export default function TelaEmbarque() {
   const router = useRouter();
-  const [codigoDigitado, setCodigoDigitado] = useState("");
+  const codigoViagem = "UEFS-7729-X";
 
   return (
     <div className="flex min-h-screen flex-col bg-[#E4F2F1] items-center justify-center p-4">
-      {/* Botão de Voltar */}
-      <button 
+      {/* Botão de Voltar - Agora com fundo branco para destaque no celular */}
+      <button
         onClick={() => router.back()}
-        className="absolute top-8 left-6 flex items-center gap-2 text-[#103173] font-black uppercase text-sm hover:opacity-70 transition-all"
+        className="absolute top-8 left-6 flex items-center gap-2 bg-white py-2 px-4 rounded-full shadow-md text-[#103173] font-black uppercase text-sm hover:opacity-70 transition-all z-10"
       >
         <ArrowLeft className="h-5 w-5" /> Voltar
       </button>
@@ -24,75 +21,48 @@ export default function ValidarCodigoPassageiro() {
       <Card className="w-full max-w-md border-none shadow-2xl bg-white overflow-hidden rounded-[40px]">
         <CardHeader className="bg-[#103173] text-white text-center py-10">
           <CardTitle className="text-3xl font-black uppercase tracking-tighter">
-            Validar Embarque
+            Embarque
           </CardTitle>
           <div className="mt-2 space-y-1">
-            <p className="text-[#F2D022] text-sm font-black tracking-widest uppercase">Escaneie o QR Code</p>
-            <p className="text-[#73AABF] text-[10px] font-bold uppercase tracking-wider">
-              Aponte a câmera para o celular do motorista
+            <p className="text-[#F2D022] text-sm font-black tracking-widest uppercase">
+              Rota ROT-9901
+            </p>
+            <p className="text-[#73AABF] text-xs font-bold uppercase tracking-wider">
+              VEÍCULO: JLS-1020 | Salvador → Feira de Santana
             </p>
           </div>
         </CardHeader>
 
-        <CardContent className="flex flex-col items-center p-8">
-          
-          {/* MOLDURA DE SCAN (Simulando Câmera) */}
-          <div className="relative mb-8 group">
-            {/* Cantos da Moldura */}
-            <div className="absolute -top-2 -left-2 w-8 h-8 border-t-4 border-l-4 border-[#F2D022] rounded-tl-lg" />
-            <div className="absolute -top-2 -right-2 w-8 h-8 border-t-4 border-r-4 border-[#F2D022] rounded-tr-lg" />
-            <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b-4 border-l-4 border-[#F2D022] rounded-bl-lg" />
-            <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-4 border-r-4 border-[#F2D022] rounded-br-lg" />
-            
-            <div className="bg-slate-900 w-64 h-64 flex flex-col items-center justify-center rounded-3xl overflow-hidden relative shadow-inner">
-               {/* Linha de Scanner Animada (Simulada) */}
-               <div className="absolute top-0 w-full h-1 bg-[#F2D022]/50 shadow-[0_0_15px_#F2D022] animate-bounce mt-10" />
-               
-               <Scan className="h-20 w-20 text-white/20" />
-               <p className="text-white/40 text-[10px] font-bold mt-4 uppercase">Câmera Ativa</p>
+        <CardContent className="flex flex-col items-center p-10">
+          {/* QR Code Simulado */}
+          <div className="bg-white p-6 border-[6px] border-[#F2D022] rounded-[40px] mb-10 shadow-xl">
+            <div className="bg-slate-50 w-56 h-56 flex items-center justify-center rounded-2xl border-2 border-dashed border-slate-200">
+              <QrCode className="h-40 w-40 text-[#103173]" />
             </div>
           </div>
 
-          {/* DIVISOR OU CÓDIGO MANUAL */}
-          <div className="w-full space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-px bg-slate-200 flex-1" />
-              <span className="text-[10px] font-black text-[#73AABF] uppercase tracking-widest">Ou digite o código</span>
-              <div className="h-px bg-slate-200 flex-1" />
+          <div className="w-full text-center space-y-2">
+            <p className="text-[10px] font-black text-[#73AABF] uppercase tracking-[0.2em]">
+              Código de Acesso Manual
+            </p>
+            <div className="bg-[#103173] py-5 px-8 rounded-3xl shadow-lg shadow-[#103173]/20">
+              <span className="text-3xl font-black text-white tracking-[0.3em]">
+                {codigoViagem}
+              </span>
             </div>
 
-            <div className="relative">
-              <Keyboard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#73AABF]" />
-              <Input 
-                placeholder="EX: UEFS-7729-X"
-                value={codigoDigitado}
-                onChange={(e) => setCodigoDigitado(e.target.value.toUpperCase())}
-                className="h-14 pl-12 rounded-2xl border-2 border-slate-100 focus:border-[#103173] font-bold text-[#103173] placeholder:text-slate-300 transition-all"
-              />
-            </div>
-
-            <Button 
-              disabled={!codigoDigitado}
-              className={`w-full h-14 rounded-2xl font-black transition-all shadow-lg ${
-                codigoDigitado 
-                ? "bg-[#23B99A] hover:bg-[#1d9e83] text-white" 
-                : "bg-slate-100 text-slate-400"
-              }`}
-            >
-              <CheckCircle2 className="mr-2 h-5 w-5" /> CONFIRMAR EMBARQUE
-            </Button>
+            <p className="pt-6 text-base text-[#73AABF] font-bold leading-relaxed max-w-[350px] mx-auto">
+              Apresente esta tela ao motorista para realizar a validação do
+              embarque.
+            </p>
           </div>
-
-          <p className="pt-8 text-[10px] text-[#73AABF] font-bold leading-relaxed text-center max-w-[250px]">
-            Problemas na validação? Peça ao motorista para verificar sua inscrição na lista.
-          </p>
         </CardContent>
       </Card>
-      
+
       <div className="mt-8 flex items-center gap-2 opacity-40">
         <div className="h-1 w-1 bg-[#103173] rounded-full" />
-        <p className="text-[#103173] font-black text-[10px] uppercase tracking-widest text-center">
-          Validação segura via Roteiro SIT
+        <p className="text-[#103173] font-black text-[10px] uppercase tracking-widest">
+          SIT - Sistema Interno de Transporte
         </p>
         <div className="h-1 w-1 bg-[#103173] rounded-full" />
       </div>

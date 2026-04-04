@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Navigation } from "@/components/landing/navigation";
 import { FooterSection } from "@/components/landing/footer-section";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -13,7 +13,6 @@ import type { LucideIcon } from "lucide-react";
 import { FROTA_MOCK, type OnibusFrota, type StatusOnibus } from "@/lib/mock/frota";
 import {
   Bus,
-  CalendarClock,
   Plus,
   Route,
   Search,
@@ -21,9 +20,10 @@ import {
   Trash2,
   UserCircle,
   UserRound,
-  Wrench,
   PencilLine,
   GraduationCap,
+  BarChart3,
+  Settings2
 } from "lucide-react";
 
 type FiltroStatus = "todos" | StatusOnibus;
@@ -41,12 +41,7 @@ export default function PaginaAdmin() {
 
     return frota.filter((onibus) => {
       const correspondeStatus = filtroStatus === "todos" || onibus.status === filtroStatus;
-      const correspondeBusca =
-        termo.length === 0 ||
-        onibus.placa.toLowerCase().includes(termo) ||
-        onibus.modelo.toLowerCase().includes(termo) ||
-        onibus.motorista.toLowerCase().includes(termo) ||
-        onibus.rotaPrincipal.toLowerCase().includes(termo);
+      const correspondeBusca = termo.length === 0 || onibus.placa.toLowerCase().includes(termo);
 
       return correspondeStatus && correspondeBusca;
     });
@@ -54,15 +49,11 @@ export default function PaginaAdmin() {
 
   const metricas = useMemo(() => {
     const onibusAtivos = frota.filter((item) => item.status === "ativo").length;
-    const emManutencao = frota.filter((item) => item.status === "manutencao").length;
     const viagensHoje = frota
       .filter((item) => item.status === "ativo")
       .reduce((total, item) => total + item.viagensHoje, 0);
-    const vagasOperacionais = frota
-      .filter((item) => item.status === "ativo")
-      .reduce((total, item) => total + item.capacidade, 0);
 
-    return { onibusAtivos, emManutencao, viagensHoje, vagasOperacionais };
+    return { onibusAtivos, viagensHoje };
   }, [frota]);
 
   const abrirTelaCadastro = (onibus?: OnibusFrota) => {
@@ -70,7 +61,6 @@ export default function PaginaAdmin() {
       router.push("/admin/onibus?modo=novo");
       return;
     }
-
     router.push(`/admin/onibus?id=${onibus.id}`);
   };
 
@@ -82,332 +72,196 @@ export default function PaginaAdmin() {
       return;
     }
 
-    const confirmado = window.confirm(`Remover ${onibus.placa} da frota mockada?`);
+    const confirmado = window.confirm(`Remover o ônibus ${onibus.placa} do sistema?`);
     if (!confirmado) return;
 
     setFrota((atual) => atual.filter((item) => item.id !== onibus.id));
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#E4F2F1] pb-24">
+    <div className="flex min-h-screen flex-col bg-slate-50 font-sans pb-24 text-slate-900">
       <Navigation />
-      <main className="flex-1 w-full max-w-6xl mx-auto py-10 px-4 space-y-8">
-        <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div className="space-y-2">
-            <h1 className="text-3xl md:text-4xl font-black text-[#103173] flex items-center gap-3 tracking-tight">
-              <div className="bg-[#103173] p-2 rounded-xl shadow-lg shadow-[#103173]/20">
-                <ShieldAlert className="h-7 w-7 text-[#F2D022]" />
+      
+      <main className="flex-1 w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        {/* CABEÇALHO DO DASHBOARD */}
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#103173] flex items-center gap-3 tracking-tight">
+              <div className="bg-[#103173] p-2 rounded-lg shadow-sm">
+                <Bus className="h-6 w-6 text-[#F2D022]" />
               </div>
-              Gestão de Ônibus
+              Gestão de Onibus
             </h1>
-            <p className="text-[#73AABF] font-bold text-sm md:text-base">
-              Painel de frota administrativa com dados mockados para demonstração.
+            <p className="text-slate-500 mt-1 text-sm font-medium">
+              Visão geral e controle operacional da frota.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
-            <Button
-              variant="outline"
-              className="h-12 border-2 border-[#73AABF] text-[#103173] font-black hover:bg-[#73AABF]/15 transition-colors"
-              onClick={() => router.push("/admin/motoristas")}
-            >
-              <UserCircle className="h-4 w-4 mr-2" /> GESTÃO DE MOTORISTAS
-            </Button>
-            <Button
-              variant="outline"
-              className="h-12 border-2 border-[#103173]/30 text-[#103173] font-black hover:bg-[#103173]/10 transition-colors"
-              onClick={() => router.push("/admin/viagens")}
-            >
-              <Route className="h-4 w-4 mr-2" /> GESTÃO DE VIAGENS
-            </Button>
-            <Button
-              variant="outline"
-              className="h-12 border-2 border-[#103173]/30 text-[#103173] font-black hover:bg-[#103173]/10 transition-colors"
-              onClick={() => router.push("/admin/usuarios")}
-            >
-              <UserRound className="h-4 w-4 mr-2" /> USUÁRIOS E PERMISSÕES
-            </Button>
-            <Button
-              variant="outline"
-              className="h-12 border-2 border-[#103173] text-[#103173] font-black hover:bg-[#103173] hover:text-white transition-colors"
-              onClick={() => window.alert("Protótipo: exportar relatório da frota.")}
-            >
-              EXPORTAR RELATÓRIO
-            </Button>
-            <Button
-              className="h-12 bg-[#23B99A] hover:bg-[#1d957c] text-white font-black shadow-lg shadow-[#23B99A]/20 transition-all active:scale-95"
-              onClick={() => abrirTelaCadastro()}
-            >
-              <Plus className="h-5 w-5 mr-2" /> NOVO ÔNIBUS
-            </Button>
-          </div>
+          <Button
+            className="h-10 bg-[#23B99A] hover:bg-[#1d957c] text-white font-semibold shadow-sm transition-all w-full sm:w-auto rounded-lg"
+            onClick={() => abrirTelaCadastro()}
+          >
+            <Plus className="h-4 w-4 mr-2" /> Novo Ônibus
+          </Button>
         </header>
 
+        {/* MÉTRICAS (KPIs) */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <MetricCard
+            label="Total da Frota"
+            valor={frota.length.toString()}
+            destaque="Veículos registrados"
+            icon={Bus}
+          />
           <MetricCard
             label="Ônibus Ativos"
             valor={metricas.onibusAtivos.toString()}
             destaque="Em operação hoje"
-            icon={Bus}
-          />
-          <MetricCard
-            label="Em Manutenção"
-            valor={metricas.emManutencao.toString()}
-            destaque="Preventiva/corretiva"
-            icon={Wrench}
+            icon={Settings2}
           />
           <MetricCard
             label="Viagens Hoje"
             valor={metricas.viagensHoje.toString()}
-            destaque="Escalas atribuídas"
+            destaque="Escalas em andamento"
             icon={Route}
-          />
-          <MetricCard
-            label="Vagas Operacionais"
-            valor={metricas.vagasOperacionais.toString()}
-            destaque="Capacidade disponível"
-            icon={UserRound}
           />
         </section>
 
-        <Card className="border-none shadow-xl bg-white">
-          <CardHeader className="pb-4 border-b border-slate-100">
-            <CardTitle className="text-[#103173] font-black text-xl">Frota Cadastrada</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 space-y-5">
-            <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#73AABF]" />
+        {/* BARRA DE FERRAMENTAS / NAVEGAÇÃO RÁPIDA */}
+        <section className="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex flex-wrap gap-2 items-center">
+          <Button variant="ghost" size="sm" className="text-slate-600 font-semibold" onClick={() => router.push("/admin/motoristas")}>
+            <UserCircle className="h-4 w-4 mr-2 text-[#73AABF]" /> Motoristas
+          </Button>
+          <div className="w-px h-4 bg-slate-200 hidden sm:block" />
+          <Button variant="ghost" size="sm" className="text-slate-600 font-semibold" onClick={() => router.push("/admin/viagens")}>
+            <Route className="h-4 w-4 mr-2 text-[#73AABF]" /> Viagens
+          </Button>
+          <div className="w-px h-4 bg-slate-200 hidden sm:block" />
+          <Button variant="ghost" size="sm" className="text-slate-600 font-semibold" onClick={() => router.push("/admin/usuarios")}>
+            <UserRound className="h-4 w-4 mr-2 text-[#73AABF]" /> Usuários
+          </Button>
+          <div className="w-px h-4 bg-slate-200 hidden sm:block" />
+          <Button variant="ghost" size="sm" className="text-slate-600 font-semibold" onClick={() => router.push("/admin/usuarios")}>
+            <BarChart3 className="h-4 w-4 mr-2 text-[#73AABF]" /> Relatórios
+          </Button>
+        </section>
+
+        {/* ÁREA DE LISTAGEM DOS ÔNIBUS */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          
+          {/* Cabeçalho da Tabela / Filtros */}
+          <div className="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/50">
+            <h2 className="text-lg font-bold text-[#103173]">Gestão de Frota</h2>
+            
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
                   value={busca}
                   onChange={(event) => setBusca(event.target.value)}
-                  placeholder="Buscar por placa, modelo, motorista ou rota..."
-                  className="pl-11 h-12 border-[#73AABF]/30 focus:border-[#103173] focus:ring-[#103173] rounded-xl"
+                  placeholder="Buscar por placa..."
+                  className="pl-9 h-9 bg-white border-slate-200 focus-visible:ring-[#103173] text-sm"
                 />
               </div>
-              <p className="text-xs font-black uppercase tracking-wider text-[#73AABF]">
-                {frotaFiltrada.length} ônibus exibidos
-              </p>
+
+              <Tabs value={filtroStatus} onValueChange={(value) => setFiltroStatus(value as FiltroStatus)} className="w-full sm:w-auto">
+                <TabsList className="h-9 bg-slate-100 p-1 w-full grid grid-cols-3">
+                  <TabsTrigger value="todos" className="text-xs font-semibold">Todos</TabsTrigger>
+                  <TabsTrigger value="ativo" className="text-xs font-semibold">Ativos</TabsTrigger>
+                  <TabsTrigger value="inativo" className="text-xs font-semibold">Inativos</TabsTrigger>
+                </TabsList>
+              </Tabs>
             </div>
+          </div>
 
-            <Tabs value={filtroStatus} onValueChange={(value) => setFiltroStatus(value as FiltroStatus)}>
-              <TabsList className="grid w-full grid-cols-4 bg-[#103173]/10 p-1 rounded-2xl h-14">
-                <TabsTrigger value="todos" className="font-black uppercase text-[11px]">
-                  Todos
-                </TabsTrigger>
-                <TabsTrigger value="ativo" className="font-black uppercase text-[11px]">
-                  Ativos
-                </TabsTrigger>
-                <TabsTrigger value="manutencao" className="font-black uppercase text-[11px]">
-                  Manutenção
-                </TabsTrigger>
-                <TabsTrigger value="inativo" className="font-black uppercase text-[11px]">
-                  Inativos
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </CardContent>
-        </Card>
-
-        <section className="space-y-5">
-          {frotaFiltrada.length === 0 ? (
-            <Card className="border-none shadow-lg bg-white">
-              <CardContent className="py-16 flex flex-col items-center justify-center gap-4 text-center">
-                <div className="bg-[#103173]/10 p-4 rounded-2xl">
-                  <Search className="h-8 w-8 text-[#103173]" />
+          {/* Lista Estilo Row (Tabela responsiva) */}
+          <div className="divide-y divide-slate-100">
+            {frotaFiltrada.length === 0 ? (
+              <div className="py-16 flex flex-col items-center justify-center text-center">
+                <div className="bg-slate-100 p-3 rounded-full mb-3">
+                  <Search className="h-6 w-6 text-slate-400" />
                 </div>
-                <p className="text-lg font-black text-[#103173]">Nenhum ônibus encontrado</p>
-                <p className="text-sm font-bold text-[#73AABF]">
-                  Ajuste os filtros ou cadastre um novo ônibus para esta demonstração.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            frotaFiltrada.map((onibus) => {
-              const statusInfo = getStatusInfo(onibus.status);
-              const barraOcupacaoCor =
-                onibus.status === "ativo"
-                  ? "bg-[#103173]"
-                  : onibus.status === "manutencao"
-                    ? "bg-orange-500"
-                    : "bg-slate-300";
+                <p className="text-base font-bold text-slate-700">Nenhum ônibus encontrado</p>
+                <p className="text-sm text-slate-500 mt-1">Ajuste os filtros ou tente uma nova busca.</p>
+              </div>
+            ) : (
+              frotaFiltrada.map((onibus) => {
+                const statusInfo = getStatusInfo(onibus.status);
 
-              return (
-                <Card key={onibus.id} className="border-none shadow-lg bg-white overflow-hidden">
-                  <CardHeader className="px-6 py-5 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                return (
+                  <div key={onibus.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 hover:bg-slate-50/80 transition-colors gap-4">
+                    
+                    {/* Info Principal */}
                     <div className="flex items-center gap-4">
-                      <div
-                        className={`p-3 rounded-xl ${
-                          onibus.status === "ativo"
-                            ? "bg-[#E4F2F1]"
-                            : onibus.status === "manutencao"
-                              ? "bg-orange-100"
-                              : "bg-slate-100"
-                        }`}
-                      >
-                        <Bus
-                          className={`h-6 w-6 ${
-                            onibus.status === "ativo"
-                              ? "text-[#103173]"
-                              : onibus.status === "manutencao"
-                                ? "text-orange-600"
-                                : "text-slate-400"
-                          }`}
-                        />
+                      <div className={`h-10 w-10 rounded-lg flex items-center justify-center border ${onibus.status === 'ativo' ? 'bg-[#E4F2F1] border-[#73AABF]/30' : 'bg-slate-100 border-slate-200'}`}>
+                        <Bus className={`h-5 w-5 ${onibus.status === 'ativo' ? 'text-[#103173]' : 'text-slate-400'}`} />
                       </div>
                       <div>
-                        <CardTitle className="text-2xl font-black text-[#103173] tracking-tight">
-                          {onibus.placa}
-                        </CardTitle>
-                        <p className="text-sm font-bold text-[#73AABF]">
-                          {onibus.modelo} • {onibus.ano}
+                        <p className="font-bold text-[#103173] text-base leading-none mb-1.5">{onibus.placa}</p>
+                        <p className="text-xs font-medium text-slate-500">
+                          {onibus.viagensHoje} {onibus.viagensHoje === 1 ? 'viagem registrada' : 'viagens registradas'} hoje
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge className={statusInfo.className}>{statusInfo.label}</Badge>
-                      {onibus.codigoEmbarqueAtivo ? (
-                        <Badge className="bg-[#103173] text-white font-bold">
-                          CÓDIGO {onibus.codigoEmbarqueAtivo}
-                        </Badge>
-                      ) : null}
-                    </div>
-                  </CardHeader>
+                    {/* Status & Ações */}
+                    <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
+                      <Badge variant="secondary" className={`${statusInfo.className} shadow-none border-0`}>
+                        {statusInfo.label}
+                      </Badge>
 
-                  <CardContent className="p-6 grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-                    <InfoBloco
-                      titulo="Motorista"
-                      valor={onibus.motorista}
-                      icone={UserCircle}
-                    />
-                    <InfoBloco
-                      titulo="Rota Principal"
-                      valor={onibus.rotaPrincipal}
-                      icone={Route}
-                    />
-                    <InfoBloco
-                      titulo="Viagens Hoje"
-                      valor={onibus.viagensHoje.toString()}
-                      icone={CalendarClock}
-                    />
-                    <InfoBloco
-                      titulo="Última Manutenção"
-                      valor={onibus.ultimaManutencao}
-                      icone={Wrench}
-                    />
-
-                    <div className="md:col-span-2 xl:col-span-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 space-y-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                        <p className="text-[11px] font-black uppercase tracking-widest text-[#73AABF]">
-                          Ocupação Média
-                        </p>
-                        <p className="text-sm font-black text-[#103173]">
-                          {onibus.ocupacaoMedia}% • {onibus.capacidade} lugares
-                        </p>
-                      </div>
-
-                      <div className="w-full h-3 rounded-full bg-white border border-slate-200 overflow-hidden">
-                        <div
-                          className={`h-full ${barraOcupacaoCor} transition-all`}
-                          style={{ width: `${onibus.ocupacaoMedia}%` }}
-                        />
-                      </div>
-
-                      <div className="flex flex-wrap gap-2">
-                        {onibus.rotasVinculadas.map((rota) => (
-                          <Badge
-                            key={`${onibus.id}-${rota}`}
-                            variant="outline"
-                            className="font-bold text-[#103173] border-[#103173]/20 bg-white"
-                          >
-                            {rota}
-                          </Badge>
-                        ))}
+                      <div className="flex items-center gap-1 border-l border-slate-200 pl-4">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-[#73AABF] hover:text-[#103173] hover:bg-[#E4F2F1]"
+                          onClick={() => abrirTelaCadastro(onibus)}
+                          title="Editar"
+                        >
+                          <PencilLine className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50"
+                          onClick={() => handleRemover(onibus)}
+                          title="Remover"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
-                  </CardContent>
 
-                  <CardFooter className="p-6 pt-0 flex flex-col sm:flex-row gap-3">
-                    <Button
-                      variant="outline"
-                      className="flex-1 h-11 border-2 border-[#103173] text-[#103173] font-black hover:bg-[#103173] hover:text-white"
-                      onClick={() =>
-                        window.alert(`Protótipo: abrir escalas vinculadas ao ônibus ${onibus.placa}.`)
-                      }
-                    >
-                      <Route className="h-4 w-4 mr-2" />
-                      VER ESCALAS
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="flex-1 h-11 border-2 border-[#73AABF] text-[#103173] font-black hover:bg-[#73AABF]/15"
-                      onClick={() => abrirTelaCadastro(onibus)}
-                    >
-                      <PencilLine className="h-4 w-4 mr-2" />
-                      EDITAR
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="h-11 text-red-600 font-black hover:bg-red-50 hover:text-red-700"
-                      onClick={() => handleRemover(onibus)}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      REMOVER
-                    </Button>
-                  </CardFooter>
-                </Card>
-              );
-            })
-          )}
-        </section>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
       </main>
+
       <FooterSection />
 
       {/* --- BARRA DE NAVEGAÇÃO ENTRE PERFIS (DEVELOPER BAR) --- */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-[#103173] text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-4 z-50 border border-[#F2D022]/20 backdrop-blur-md w-[90%] md:w-auto overflow-x-auto">
-        <div className="flex flex-col border-r border-white/15 pr-3 shrink-0">
-          <span className="text-[8px] font-extrabold uppercase text-[#F2D022] tracking-tight">
-            Dev
-          </span>
-          <span className="text-[10px] font-bold text-white/70">Perfis</span>
-        </div>
-
+      {/* Deixada um pouco mais discreta para não roubar a atenção do dashboard */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-4 py-2 rounded-full shadow-2xl flex items-center gap-3 z-50 border border-slate-700 w-[90%] md:w-auto overflow-x-auto no-scrollbar">
+        <span className="text-[10px] font-bold text-slate-400 shrink-0 uppercase tracking-widest pl-2">
+          Dev Mode
+        </span>
+        <div className="w-px h-4 bg-slate-700 shrink-0" />
         <div className="flex gap-1">
-          <Button
-            size="sm"
-            variant="ghost"
-            className="hover:bg-white/10 text-white gap-1.5 font-bold text-xs h-8 px-2.5 shrink-0"
-            onClick={() => router.push("/passageiro")}
-          >
-            <UserCircle className="h-3.5 w-3.5" /> Passageiro
+          <Button size="sm" variant="ghost" className="hover:bg-slate-800 text-white font-medium text-xs h-8 px-3 rounded-full shrink-0" onClick={() => router.push("/passageiro")}>
+            <UserCircle className="h-3.5 w-3.5 mr-1.5" /> Passageiro
           </Button>
-
-          <Button
-            size="sm"
-            variant="ghost"
-            className="hover:bg-white/10 text-white gap-1.5 font-bold text-xs h-8 px-2.5 shrink-0"
-            onClick={() => router.push("/professor")}
-          >
-            <GraduationCap className="h-3.5 w-3.5" /> Professor
+          <Button size="sm" variant="ghost" className="hover:bg-slate-800 text-white font-medium text-xs h-8 px-3 rounded-full shrink-0" onClick={() => router.push("/professor")}>
+            <GraduationCap className="h-3.5 w-3.5 mr-1.5" /> Professor
           </Button>
-
-          <Button
-            size="sm"
-            variant="ghost"
-            className="hover:bg-[#F2D022] hover:text-[#103173] text-white gap-1.5 font-bold text-xs h-8 px-2.5 transition-colors shrink-0"
-            onClick={() => router.push("/motorista")}
-          >
-            <Bus className="h-3.5 w-3.5" /> Motorista
+          <Button size="sm" variant="ghost" className="hover:bg-slate-800 text-white font-medium text-xs h-8 px-3 rounded-full shrink-0" onClick={() => router.push("/motorista")}>
+            <Bus className="h-3.5 w-3.5 mr-1.5" /> Motorista
           </Button>
-
-          <Button
-            size="sm"
-            variant="ghost"
-            className="hover:bg-red-500 hover:text-white text-white gap-1.5 font-bold text-xs h-8 px-2.5 transition-colors shrink-0"
-            onClick={() => router.push("/admin")}
-          >
-            <ShieldAlert className="h-3.5 w-3.5" /> Admin
+          <Button size="sm" variant="ghost" className="bg-white text-slate-900 hover:bg-slate-200 font-bold text-xs h-8 px-4 rounded-full shrink-0 shadow-sm" onClick={() => router.push("/admin")}>
+            Admin
           </Button>
         </div>
       </div>
@@ -415,24 +269,18 @@ export default function PaginaAdmin() {
   );
 }
 
+// Funções auxiliares mantidas intactas
 function getStatusInfo(status: StatusOnibus) {
   if (status === "ativo") {
     return {
       label: "ATIVO",
-      className: "bg-[#23B99A] text-white font-bold",
-    };
-  }
-
-  if (status === "manutencao") {
-    return {
-      label: "MANUTENÇÃO",
-      className: "bg-orange-500 text-white font-bold",
+      className: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100",
     };
   }
 
   return {
     label: "INATIVO",
-    className: "bg-slate-400 text-white font-bold",
+    className: "bg-slate-100 text-slate-600 hover:bg-slate-100",
   };
 }
 
@@ -445,35 +293,17 @@ interface MetricCardProps {
 
 function MetricCard({ label, valor, destaque, icon: Icon }: MetricCardProps) {
   return (
-    <Card className="border-none shadow-lg bg-white overflow-hidden group">
-      <CardContent className="p-6 flex items-center justify-between">
-        <div>
-          <p className="text-[10px] font-black text-[#73AABF] uppercase tracking-widest">{label}</p>
-          <p className="text-3xl font-black text-[#103173]">{valor}</p>
-          <p className="text-[11px] font-bold text-[#73AABF] mt-1">{destaque}</p>
+    <Card className="border border-slate-200 shadow-sm bg-white overflow-hidden group">
+      <CardContent className="p-5 flex items-start justify-between">
+        <div className="space-y-1.5">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</p>
+          <p className="text-2xl font-bold text-[#103173] leading-none">{valor}</p>
+          <p className="text-xs font-medium text-slate-400">{destaque}</p>
         </div>
-        <div className="bg-[#103173]/5 p-3 rounded-2xl group-hover:bg-[#F2D022]/20 transition-colors">
-          <Icon className="h-8 w-8 text-[#103173]" />
+        <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-[#73AABF] group-hover:text-[#103173] group-hover:bg-[#E4F2F1] transition-colors">
+          <Icon className="h-5 w-5" />
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-interface InfoBlocoProps {
-  titulo: string;
-  valor: string;
-  icone: LucideIcon;
-}
-
-function InfoBloco({ titulo, valor, icone: Icon }: InfoBlocoProps) {
-  return (
-    <div className="bg-[#E4F2F1] border border-[#103173]/10 rounded-2xl p-4 space-y-2">
-      <div className="flex items-center gap-2 text-[#73AABF]">
-        <Icon className="h-4 w-4" />
-        <p className="text-[10px] font-black uppercase tracking-widest">{titulo}</p>
-      </div>
-      <p className="text-base font-black text-[#103173] leading-tight">{valor}</p>
-    </div>
   );
 }

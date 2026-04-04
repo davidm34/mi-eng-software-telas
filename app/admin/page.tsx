@@ -80,7 +80,7 @@ export default function PaginaAdmin() {
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 font-sans pb-24 text-slate-900">
-      <Navigation isMotorista={false}/>
+      <Navigation/>
       
       <main className="flex-1 w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8">
         

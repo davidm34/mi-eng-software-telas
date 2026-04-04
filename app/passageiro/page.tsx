@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Navigation } from "@/components/landing/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,32 +49,24 @@ export default function PaginaAluno() {
   return (
     <div className="flex min-h-screen flex-col bg-[#f0f4f8]">
       <div className="bg-[#103173] relative overflow-hidden">
-        <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 pt-4 pb-1 relative flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-[#F2D022] p-1.5 rounded-lg">
-              <Bus className="h-4 w-4 text-[#103173]" />
-            </div>
-            <span className="text-lg font-extrabold text-white tracking-tight">Rota UEFS</span>
-          </Link>
-          <Button className="bg-[#F2D022] hover:bg-[#d9ba1f] text-[#103173] font-bold rounded-md px-4 h-9">
-            <User className="w-4 h-4 mr-2" /> PERFIL
-          </Button>
-        </div>
-
-        <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 pt-4 pb-7 relative">
-          <div className="flex items-center gap-2 mb-1">
-            <GraduationCap className="h-4 w-4 text-[#F2D022]" />
-            <span className="text-[11px] font-bold text-[#F2D022] uppercase tracking-widest">
-              Portal do Aluno
-            </span>
-          </div>
-          <h1 className="text-2xl font-extrabold text-white leading-tight tracking-tight">
-            Inscreva-se na sua rota
-          </h1>
-        </div>
+        <Navigation tipoUsuario="aluno" />
       </div>
 
-      <div className="sticky top-0 z-30 bg-[#f0f4f8]/95 backdrop-blur-md border-b border-[#103173]/5">
+      <div className="flex-1 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full px-4 pt-10 pb-32">
+        <header className="mb-8">
+            <div className="flex items-center gap-2 mb-1">
+              <GraduationCap className="h-4 w-4 text-[#103173]" />
+              <span className="text-[11px] font-bold text-[#103173] uppercase tracking-widest">
+                Portal do Aluno
+              </span>
+            </div>
+            <h1 className="text-3xl font-extrabold text-[#103173] tracking-tight">
+              Inscreva-se na sua rota
+            </h1>
+            <p className="text-[#73AABF] text-sm mt-1 font-medium">
+              Confira as viagens do dias.
+            </p>
+        </header>
         <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 py-3">
           <div className="flex gap-2">
             {DIAS_SEMANA.map((dia) => (
@@ -87,9 +80,7 @@ export default function PaginaAluno() {
             ))}
           </div>
         </div>
-      </div>
-
-      <main className="flex-1 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full px-4 pt-5 pb-32">
+      
         <div className="flex items-center justify-between mb-4">
           <span className="text-xs font-bold text-[#103173]/40 uppercase tracking-widest">{diaAtual?.full}</span>
         </div>
@@ -168,7 +159,7 @@ export default function PaginaAluno() {
             );
           })}
         </div>
-      </main>
+      </div>
 
       {/* Dev Bar */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-[#103173] text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-4 z-50 border border-[#F2D022]/20 backdrop-blur-md w-[90%] md:w-auto overflow-x-auto">

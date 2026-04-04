@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Navigation } from "@/components/landing/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,17 +48,7 @@ export default function PaginaProfessor() {
   return (
     <div className="flex min-h-screen flex-col bg-[#f0f4f8]">
       <div className="bg-[#103173] relative overflow-hidden border-b-4 border-[#F2D022]">
-        <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 pt-4 pb-1 relative flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-[#F2D022] p-1.5 rounded-lg">
-              <Bus className="h-4 w-4 text-[#103173]" />
-            </div>
-            <span className="text-lg font-extrabold text-white tracking-tight">Rota UEFS</span>
-          </Link>
-          <Button className="bg-[#F2D022] hover:bg-[#d9ba1f] text-[#103173] font-bold rounded-md px-4 h-9">
-            <User className="w-4 h-4 mr-2" /> MEU PERFIL
-          </Button>
-        </div>
+        <Navigation tipoUsuario="professor" />
 
         <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 pt-4 pb-7 relative">
           <div className="flex items-center gap-2 mb-1">

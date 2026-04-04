@@ -188,7 +188,7 @@ export default function MotoristaPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f0f4f8]">
-      <Navigation isMotorista={true} />
+      <Navigation tipoUsuario="motorista" />
 
       <main className="flex-1 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full px-4 pt-10 pb-32">
         <header className="mb-8">
